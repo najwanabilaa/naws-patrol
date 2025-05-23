@@ -65,6 +65,6 @@
     <div class="cat-container">
         <img src="{{ asset('image/cat.png') }}" alt="Cats" class="cat-img" />
     </div>
-    <script src="{{ asset('js/login-register.js') }}"></script>
+    <script src="{{ asset('js/script.js') }}"></script>
 </body>
 </html>
