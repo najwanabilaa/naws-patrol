@@ -1,234 +1,328 @@
-const API_URL = 'http://localhost:8000/api';
-
-const API_HEADERS = {
-  'Content-Type': 'application/json',
-  'Accept': 'application/json',
-};
-
-document.addEventListener('DOMContentLoaded', function() {
-  if (document.getElementById('lokasi')) {
-    initReportPage();
-  }
-});
-
-function initReportPage() {
-  document.getElementById("lokasi").addEventListener("click", handleLocation);
-  document.getElementById("uploadFoto").addEventListener("change", handlePhotoUpload);
-  document.querySelector('form').addEventListener('submit', handleFormSubmission);
-}
-
-function handleLocation(e) {
-  e.preventDefault();
-  
-  if (!navigator.geolocation) {
-    showAlert("Browser tidak mendukung geolocation.", "error");
-    return;
-  }
-  
-  showAlert("Mengambil lokasi...", "info");
-  
-  navigator.geolocation.getCurrentPosition(
-    function(pos) {
-      const lat = pos.coords.latitude;
-      const lon = pos.coords.longitude;
-      const link = `https://maps.google.com/?q=${lat},${lon}`;
-      
-      document.getElementById("lokasiValue").value = link;
-      document.getElementById("lokasi").textContent = "Lokasi tersimpan!";
-      showAlert("Lokasi berhasil disimpan", "success");
-    },
-    function(error) {
-      const errorMessages = {
-        1: "Izin lokasi ditolak",
-        2: "Informasi lokasi tidak tersedia",
-        3: "Waktu permintaan habis"
-      };
-      showAlert(errorMessages[error.code] || "Gagal mengambil lokasi", "error");
+function showPopup(message, isSuccess = true) {
+    const existingPopup = document.querySelector('.popup-overlay');
+    if (existingPopup) {
+        existingPopup.remove();
     }
-  );
-}
 
-function handlePhotoUpload(e) {
-  const file = e.target.files[0];
-  if (!file) return;
-
-  if (!file.type.match('image.*')) {
-    showAlert("Hanya file gambar yang diperbolehkan", "error");
-    return;
-  }
-
-  const reader = new FileReader();
-  reader.onload = function(event) {
-    document.getElementById('previewFoto').src = event.target.result;
-  };
-  reader.readAsDataURL(file);
-}
-
-async function handleFormSubmission(e) {
-  e.preventDefault();
-  
-  const form = e.target;
-  
-  const formData = {
-    nama: form.nama.value.trim(),
-    telepon: form.telepon.value.trim(),
-    alamat: form.alamat.value.trim(),
-    alasan: form.alasan.value.trim(),
-    lokasi: document.getElementById('lokasiValue').value,
-    foto: document.getElementById('previewFoto').src,
-    tanggal: new Date().toISOString().split('T')[0]
-  };
-
-  if (!formData.lokasi) {
-    showAlert("Silakan ambil lokasi terlebih dahulu", "error");
-    return;
-  }
-
-  if (!formData.nama || !formData.telepon || !formData.alasan) {
-    showAlert("Harap isi semua field yang wajib diisi", "error");
-    return;
-  }
-
-  const submitButton = form.querySelector('button[type="submit"]');
-  const originalText = submitButton?.textContent;
-  if (submitButton) {
-    submitButton.disabled = true;
-    submitButton.textContent = 'Menyimpan...';
-  }
-
-  try {
-    await saveReportToAPI(formData);
-    saveReportToLocalStorage(formData);
+    const popupOverlay = document.createElement('div');
+    popupOverlay.className = 'popup-overlay';
     
-    form.reset();
-    document.getElementById('previewFoto').src = "https://img.icons8.com/ios/100/camera--v1.png";
-    document.getElementById("lokasi").textContent = "KLIK UNTUK LOKASI";
+    const popup = document.createElement('div');
+    popup.className = `popup ${isSuccess ? 'popup-success' : 'popup-error'}`;
     
-    showAlert("Laporan berhasil disimpan ke server!", "success");
-  } catch (error) {
-    console.error("Error saving report:", error);
-    saveReportToLocalStorage(formData);
+    const popupContent = document.createElement('div');
+    popupContent.className = 'popup-content';
     
-    if (error.message.includes('Failed to fetch')) {
-      showAlert("Tidak dapat terhubung ke server. Laporan disimpan secara lokal.", "warning");
+    const icon = document.createElement('div');
+    icon.className = 'popup-icon';
+    
+    if (isSuccess) {
+        icon.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32">
+                <path fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+            </svg>
+        `;
     } else {
-      showAlert(`Error: ${error.message}. Laporan disimpan secara lokal.`, "warning");
-    }
-  } finally {
-    if (submitButton) {
-      submitButton.disabled = false;
-      submitButton.textContent = originalText;
-    }
-  }
-}
-
-async function saveReportToAPI(reportData) {
-  try {
-    const response = await fetch(`${API_URL}/laporan`, {
-      method: 'POST',
-      headers: API_HEADERS,
-      body: JSON.stringify(reportData)
-    });
-    
-    if (response.status === 422) {
-      const errorData = await response.json();
-      const errorMessages = Object.values(errorData.errors || {}).flat();
-      throw new Error(errorMessages.join(', ') || 'Validation error');
+        icon.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32">
+                <path fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M18 6L6 18M6 6l12 12"/>
+            </svg>
+        `;
     }
     
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || `HTTP ${response.status}: ${response.statusText}`);
-    }
+    const messageEl = document.createElement('p');
+    messageEl.textContent = message;
     
-    const data = await response.json();
-    console.log('Report saved to Laravel API:', data);
-    return data;
-  } catch (error) {
-    console.error('Error saving to Laravel API:', error);
-    throw error;
-  }
-}
-
-function saveReportToLocalStorage(reportData) {
-  try {
-    const reports = JSON.parse(localStorage.getItem('wildlifeReports') || '[]');
-    
-    const reportWithMeta = {
-      id: Date.now().toString(),
-      ...reportData,
-      created_at: new Date().toISOString(),
-      synced: false
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'popup-close';
+    closeBtn.textContent = 'OK';
+    closeBtn.onclick = () => {
+        popupOverlay.remove();
     };
     
-    reports.push(reportWithMeta);
-    localStorage.setItem('wildlifeReports', JSON.stringify(reports));
-    console.log("Report saved to localStorage:", reportWithMeta);
-  } catch (error) {
-    console.error("Error saving to localStorage:", error);
-    showAlert("Gagal menyimpan laporan secara lokal", "error");
-  }
+    popupContent.appendChild(icon);
+    popupContent.appendChild(messageEl);
+    popupContent.appendChild(closeBtn);
+    popup.appendChild(popupContent);
+    popupOverlay.appendChild(popup);
+    
+    document.body.appendChild(popupOverlay);
+    
+    // Add styles if not already added
+    if (!document.querySelector('#popup-styles')) {
+        const style = document.createElement('style');
+        style.id = 'popup-styles';
+        style.textContent = `
+            .popup-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
+                animation: fadeIn 0.3s ease-in-out;
+            }
+            
+            .popup {
+                background: white;
+                border-radius: 15px;
+                padding: 0;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+                animation: slideIn 0.3s ease-out;
+                max-width: 350px;
+                width: 90%;
+            }
+            
+            .popup-success {
+                border-top: 5px solid #4CAF50;
+            }
+            
+            .popup-error {
+                border-top: 5px solid #f44336;
+            }
+            
+            .popup-content {
+                padding: 30px;
+                text-align: center;
+            }
+            
+            .popup-icon {
+                width: 60px;
+                height: 60px;
+                border-radius: 50%;
+                margin: 0 auto 20px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                font-weight: bold;
+            }
+            
+            .popup-icon svg {
+                width: 30px;
+                height: 30px;
+            }
+            
+            .popup-success .popup-icon {
+                background-color: #4CAF50;
+            }
+            
+            .popup-error .popup-icon {
+                background-color: #f44336;
+            }
+            
+            .popup-content p {
+                margin: 0 0 25px 0;
+                font-size: 16px;
+                color: #333;
+                line-height: 1.5;
+            }
+            
+            .popup-close {
+                background-color: #2B6ED6;
+                color: white;
+                border: none;
+                padding: 12px 30px;
+                border-radius: 25px;
+                cursor: pointer;
+                font-size: 14px;
+                font-weight: bold;
+                transition: background-color 0.3s;
+            }
+            
+            .popup-close:hover {
+                background-color: #1e5bb8;
+            }
+            
+            @keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+            
+            @keyframes slideIn {
+                from { 
+                    opacity: 0;
+                    transform: translateY(-50px) scale(0.8);
+                }
+                to { 
+                    opacity: 1;
+                    transform: translateY(0) scale(1);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    }
 }
 
-async function getAllReports() {
-  try {
-    const response = await fetch(`${API_URL}/laporan`, {
-      method: 'GET',
-      headers: API_HEADERS
+function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+
+function isValidPhone(phone) {
+    const phoneRegex = /^[0-9+\-\s()]{10,15}$/;
+    return phoneRegex.test(phone.replace(/\s/g, ''));
+}
+
+function toggleSwitch() {
+    // Switch animation
+    const switchElement = document.querySelector('.switch');
+    if (switchElement) {
+        const style = document.createElement('style');
+        style.textContent = `
+            .switch::before {
+                transform: translateX(10px) !important;
+                transition: 0.3s;
+            }
+        `;
+        document.head.appendChild(style);
+        
+        setTimeout(() => {
+            style.remove();
+        }, 300);
+    }
+    
+    const currentPage = document.title;
+    
+    if (currentPage.includes('Login')) {
+        handleLogin();
+    } else if (currentPage.includes('Register')) {
+        handleRegister();
+    }
+}
+
+function handleLogin() {
+    const email = document.querySelector('input[name="email"]').value.trim();
+    const password = document.querySelector('input[name="password"]').value.trim();
+    
+    // Client-side validation
+    if (!email || !password) {
+        showPopup('Mohon isi semua field!', false);
+        return;
+    }
+    
+    if (!isValidEmail(email)) {
+        showPopup('Format email tidak valid!', false);
+        return;
+    }
+    
+    if (password.length < 6) {
+        showPopup('Password minimal 6 karakter!', false);
+        return;
+    }
+    
+    // If validation passes, submit the form
+    showPopup('Memproses login...', true);
+    
+    setTimeout(() => {
+        document.querySelector('form').submit();
+    }, 1000);
+}
+
+function handleRegister() {
+    const name = document.querySelector('input[name="name"]').value.trim();
+    const email = document.querySelector('input[name="email"]').value.trim();
+    const password = document.querySelector('input[name="password"]').value.trim();
+    const passwordConfirmation = document.querySelector('input[name="password_confirmation"]').value.trim();
+    const phone = document.querySelector('input[name="phone"]').value.trim();
+    
+    // Client-side validation
+    if (!name || !email || !password || !passwordConfirmation || !phone) {
+        showPopup('Mohon isi semua field!', false);
+        return;
+    }
+    
+    if (name.length < 2) {
+        showPopup('Nama minimal 2 karakter!', false);
+        return;
+    }
+    
+    if (!isValidEmail(email)) {
+        showPopup('Format email tidak valid!', false);
+        return;
+    }
+    
+    if (password.length < 6) {
+        showPopup('Password minimal 6 karakter!', false);
+        return;
+    }
+    
+    if (password !== passwordConfirmation) {
+        showPopup('Konfirmasi password tidak cocok!', false);
+        return;
+    }
+    
+    if (!isValidPhone(phone)) {
+        showPopup('Format nomor telepon tidak valid!', false);
+        return;
+    }
+    
+    // If validation passes, submit the form
+    showPopup('Memproses registrasi...', true);
+    
+    setTimeout(() => {
+        document.querySelector('form').submit();
+    }, 1000);
+}
+
+// DOM Ready
+document.addEventListener('DOMContentLoaded', function() {
+    const inputs = document.querySelectorAll('input');
+    
+    // Enter key handler
+    inputs.forEach(input => {
+        input.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                toggleSwitch();
+            }
+        });
     });
     
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    // Focus first input
+    if (inputs.length > 0) {
+        inputs[0].focus();
     }
     
-    const result = await response.json();
-    const reports = result.data || result;
-    console.log('Reports from Laravel API:', reports);
-    return reports;
-  } catch (error) {
-    console.error('Error fetching reports from Laravel API:', error);
-    showAlert("Tidak dapat mengambil data dari server, menggunakan data lokal", "warning");
-    return JSON.parse(localStorage.getItem('wildlifeReports') || '[]');
-  }
-}
-
-async function syncLocalReports() {
-  try {
-    const localReports = JSON.parse(localStorage.getItem('wildlifeReports') || '[]');
-    const unsyncedReports = localReports.filter(report => !report.synced);
-    
-    for (const report of unsyncedReports) {
-      try {
-        await saveReportToAPI(report);
-        report.synced = true;
-      } catch (error) {
-        console.error('Failed to sync report:', report.id, error);
-      }
-    }
-    
-    localStorage.setItem('wildlifeReports', JSON.stringify(localReports));
-    
-    if (unsyncedReports.length > 0) {
-      showAlert(`${unsyncedReports.filter(r => r.synced).length} laporan berhasil disinkronisasi`, "success");
-    }
-  } catch (error) {
-    console.error('Error syncing local reports:', error);
-  }
-}
-
-function showAlert(message, type = "info") {
-  const existingAlert = document.querySelector('.custom-alert');
-  if (existingAlert) {
-    existingAlert.remove();
-  }
-
-  const alert = document.createElement('div');
-  alert.className = `custom-alert ${type}`;
-  alert.textContent = message;
-  
-  document.body.appendChild(alert);
-  setTimeout(() => alert.remove(), 3000);
-}
-
-document.addEventListener('DOMContentLoaded', function() {
+    // Real-time validation feedback
+    inputs.forEach(input => {
+        input.addEventListener('blur', function() {
+            validateField(this);
+        });
+    });
 });
+
+function validateField(field) {
+    const value = field.value.trim();
+    
+    // Remove existing error styling
+    field.classList.remove('error');
+    
+    if (field.name === 'email' && value && !isValidEmail(value)) {
+        field.classList.add('error');
+    }
+    
+    if (field.name === 'phone' && value && !isValidPhone(value)) {
+        field.classList.add('error');
+    }
+    
+    if (field.name === 'password_confirmation') {
+        const password = document.querySelector('input[name="password"]').value;
+        if (value && value !== password) {
+            field.classList.add('error');
+        }
+    }
+}
+
+function clearForm() {
+    const inputs = document.querySelectorAll('input');
+    inputs.forEach(input => {
+        if (input.type !== 'checkbox') {
+            input.value = '';
+        }
+    });
+}
