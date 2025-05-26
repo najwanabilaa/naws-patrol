@@ -4,7 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Naw's Patrol Register</title>
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}" />
+    @vite(['resources/css/login-register.css'])
+    @vite(['resources/js/login-register.js'])
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -14,8 +15,7 @@
             <div class="form-box">
                 <form method="POST" action="{{ route('register') }}">
                     @csrf
-                    
-                    <!-- Name -->
+                
                     <div>
                         <input id="name" 
                                type="text" 
