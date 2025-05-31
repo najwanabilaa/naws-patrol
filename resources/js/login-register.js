@@ -48,6 +48,7 @@ function showPopup(message, isSuccess = true) {
     
     document.body.appendChild(popupOverlay);
     
+    // Add styles if not already added
     if (!document.querySelector('#popup-styles')) {
         const style = document.createElement('style');
         style.id = 'popup-styles';
@@ -168,21 +169,24 @@ function isValidPhone(phone) {
 }
 
 function toggleSwitch() {
-    const switchElement = document.querySelector('.switch::before');
+    // Switch animation
+    const switchElement = document.querySelector('.switch');
+    if (switchElement) {
+        const style = document.createElement('style');
+        style.textContent = `
+            .switch::before {
+                transform: translateX(10px) !important;
+                transition: 0.3s;
+            }
+        `;
+        document.head.appendChild(style);
+        
+        setTimeout(() => {
+            style.remove();
+        }, 300);
+    }
+    
     const currentPage = document.title;
-    
-    const style = document.createElement('style');
-    style.textContent = `
-        .switch::before {
-            transform: translateX(10px);
-            transition: 0.3s;
-        }
-    `;
-    document.head.appendChild(style);
-    
-    setTimeout(() => {
-        style.remove();
-    }, 300);
     
     if (currentPage.includes('Login')) {
         handleLogin();
@@ -192,9 +196,10 @@ function toggleSwitch() {
 }
 
 function handleLogin() {
-    const email = document.querySelector('input[type="email"]').value.trim();
-    const password = document.querySelector('input[type="password"]').value.trim();
+    const email = document.querySelector('input[name="email"]').value.trim();
+    const password = document.querySelector('input[name="password"]').value.trim();
     
+    // Client-side validation
     if (!email || !password) {
         showPopup('Mohon isi semua field!', false);
         return;
@@ -210,31 +215,23 @@ function handleLogin() {
         return;
     }
     
+    // If validation passes, submit the form
+    showPopup('Memproses login...', true);
+    
     setTimeout(() => {
-        if (email.includes('@') && password.length >= 6) {
-            localStorage.setItem('userSession', JSON.stringify({
-                email: email,
-                loginTime: new Date().toISOString()
-            }));
-            
-            showPopup('Login berhasil! Selamat datang di Naw\'s Patrol!', true);
-            
-            setTimeout(() => {
-                window.location.href = 'landing.html';
-            }, 2000);
-        } else {
-            showPopup('Email atau password salah!', false);
-        }
-    }, 500);
+        document.querySelector('form').submit();
+    }, 1000);
 }
 
 function handleRegister() {
-    const name = document.querySelector('input[type="text"]').value.trim();
-    const email = document.querySelector('input[type="email"]').value.trim();
-    const password = document.querySelector('input[type="password"]').value.trim();
-    const phone = document.querySelectorAll('input[type="text"]')[1].value.trim();
+    const name = document.querySelector('input[name="name"]').value.trim();
+    const email = document.querySelector('input[name="email"]').value.trim();
+    const password = document.querySelector('input[name="password"]').value.trim();
+    const passwordConfirmation = document.querySelector('input[name="password_confirmation"]').value.trim();
+    const phone = document.querySelector('input[name="phone"]').value.trim();
     
-    if (!name || !email || !password || !phone) {
+    // Client-side validation
+    if (!name || !email || !password || !passwordConfirmation || !phone) {
         showPopup('Mohon isi semua field!', false);
         return;
     }
@@ -254,60 +251,78 @@ function handleRegister() {
         return;
     }
     
+    if (password !== passwordConfirmation) {
+        showPopup('Konfirmasi password tidak cocok!', false);
+        return;
+    }
+    
     if (!isValidPhone(phone)) {
         showPopup('Format nomor telepon tidak valid!', false);
         return;
     }
     
+    // If validation passes, submit the form
+    showPopup('Memproses registrasi...', true);
+    
     setTimeout(() => {
-        if (email.toLowerCase().includes('test')) {
-            showPopup('Email sudah terdaftar! Gunakan email lain.', false);
-        } else {
-            const userData = {
-                name: name,
-                email: email,
-                phone: phone,
-                registerTime: new Date().toISOString()
-            };
-            
-            localStorage.setItem('registeredUser', JSON.stringify(userData));
-            
-            showPopup('Registrasi berhasil! Selamat bergabung dengan Naw\'s Patrol!', true);
-            
-            setTimeout(() => {
-                window.location.href = 'landing.html';
-            }, 2000);
-        }
-    }, 500);
+        document.querySelector('form').submit();
+    }, 1000);
 }
 
+// DOM Ready
 document.addEventListener('DOMContentLoaded', function() {
     const inputs = document.querySelectorAll('input');
     
+    // Enter key handler
     inputs.forEach(input => {
         input.addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
+                e.preventDefault();
                 toggleSwitch();
             }
         });
     });
     
+    // Focus first input
     if (inputs.length > 0) {
         inputs[0].focus();
     }
+    
+    // Real-time validation feedback
+    inputs.forEach(input => {
+        input.addEventListener('blur', function() {
+            validateField(this);
+        });
+    });
 });
+
+function validateField(field) {
+    const value = field.value.trim();
+    
+    // Remove existing error styling
+    field.classList.remove('error');
+    
+    if (field.name === 'email' && value && !isValidEmail(value)) {
+        field.classList.add('error');
+    }
+    
+    if (field.name === 'phone' && value && !isValidPhone(value)) {
+        field.classList.add('error');
+    }
+    
+    if (field.name === 'password_confirmation') {
+        const password = document.querySelector('input[name="password"]').value;
+        if (value && value !== password) {
+            field.classList.add('error');
+        }
+    }
+}
 
 function clearForm() {
     const inputs = document.querySelectorAll('input');
     inputs.forEach(input => {
-        input.value = '';
+        if (input.type !== 'checkbox') {
+            input.value = '';
+        }
     });
-}
-
-function checkUserSession() {
-    const session = localStorage.getItem('userSession');
-    if (session) {
-        return JSON.parse(session);
-    }
-    return null;
 }

@@ -1,65 +1,124 @@
-<x-guest-layout>
-    <form method="POST" action="{{ route('register') }}">
-        @csrf
-        <h1>Naw's Patrol Register</h1>
-        <!-- Name -->
-        <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Naw's Patrol Register</title>
+    @vite(['resources/css/login-register.css'])
+    @vite(['resources/js/login-register.js'])
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h2>Naw's Patrol Register</h2>
+        <div class="border-gradient">
+            <div class="form-box">
+                <form method="POST" action="{{ route('register') }}">
+                    @csrf
+                
+                    <div>
+                        <input id="name" 
+                               type="text" 
+                               name="name" 
+                               placeholder="Name"
+                               value="{{ old('name') }}" 
+                               required 
+                               autofocus 
+                               autocomplete="name" />
+                        @if($errors->get('name'))
+                            <div class="error-message">
+                                @foreach($errors->get('name') as $error)
+                                    <span>{{ $error }}</span>
+                                @endforeach
+                            </div>
+                        @endif
+                    </div>
+
+                    <!-- Email Address -->
+                    <div>
+                        <input id="email" 
+                               type="email" 
+                               name="email" 
+                               placeholder="Email"
+                               value="{{ old('email') }}" 
+                               required 
+                               autocomplete="username" />
+                        @if($errors->get('email'))
+                            <div class="error-message">
+                                @foreach($errors->get('email') as $error)
+                                    <span>{{ $error }}</span>
+                                @endforeach
+                            </div>
+                        @endif
+                    </div>
+
+                    <!-- Password -->
+                    <div>
+                        <input id="password" 
+                               type="password"
+                               name="password"
+                               placeholder="Password"
+                               required 
+                               autocomplete="new-password" />
+                        @if($errors->get('password'))
+                            <div class="error-message">
+                                @foreach($errors->get('password') as $error)
+                                    <span>{{ $error }}</span>
+                                @endforeach
+                            </div>
+                        @endif
+                    </div>
+
+                    <!-- Confirm Password -->
+                    <div>
+                        <input id="password_confirmation" 
+                               type="password"
+                               name="password_confirmation" 
+                               placeholder="Confirm Password"
+                               required 
+                               autocomplete="new-password" />
+                        @if($errors->get('password_confirmation'))
+                            <div class="error-message">
+                                @foreach($errors->get('password_confirmation') as $error)
+                                    <span>{{ $error }}</span>
+                                @endforeach
+                            </div>
+                        @endif
+                    </div>
+
+                    <!-- Phone Number -->
+                    <div>
+                        <input id="phone" 
+                               type="text"
+                               name="phone"
+                               placeholder="Phone Number"
+                               value="{{ old('phone') }}"
+                               required 
+                               autocomplete="tel" />
+                        @if($errors->get('phone'))
+                            <div class="error-message">
+                                @foreach($errors->get('phone') as $error)
+                                    <span>{{ $error }}</span>
+                                @endforeach
+                            </div>
+                        @endif
+                    </div>
+
+                    <button type="submit" class="slider-button">
+                        Join Us <span class="switch"></span>
+                    </button>
+                    
+                    <div class="link">
+                        <a href="{{ route('login') }}">Already registered?</a>
+                    </div>
+                </form>
+            </div>
         </div>
-
-        <!-- Email Address -->
-        <div class="mt-4">
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
-
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
-
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
-
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                            type="password"
-                            name="password_confirmation" required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-        </div>
-
-<!-- Phone Number -->
-<div class="mt-4">
-    <x-input-label for="phone" :value="__('Phone Number')" />
-
-    <x-text-input id="phone" class="block mt-1 w-full"
-                  type="textr"
-                  name="phone"
-                  :value="old('phone')"
-                  required autocomplete="tel" />
-
-    <x-input-error :messages="$errors->get('phone')" class="mt-2" />
-</div>
-
-        <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
-                {{ __('Already registered?') }}
-            </a>
-
-            <x-primary-button class="ms-4">
-                {{ __('Join Us') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+    </div>
+    
+    <div class="cat-container">
+        <img src="{{ asset('image/cat.png') }}" alt="Cats" class="cat-img" />
+    </div>
+    <script src="{{ asset('js/script.js') }}"></script>
+</body>
+</html>
