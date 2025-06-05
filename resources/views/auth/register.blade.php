@@ -4,8 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Naw's Patrol Register</title>
-    @vite(['resources/css/login-register.css'])
-    @vite(['resources/js/login-register.js'])
+    <link href="{{ asset('css/login-register.css') }}" rel="stylesheet">
+    <link href="{{ asset('js/login-register.js') }}" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -17,6 +17,7 @@
                     @csrf
                 
                     <div>
+                        <label for="name"></label>
                         <input id="name" 
                                type="text" 
                                name="name" 
