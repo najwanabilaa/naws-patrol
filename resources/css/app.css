@@ -1,3 +1,41 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom Components */
+@layer components {
+  .category-button {
+    @apply flex items-center gap-2 px-4 py-2 rounded-md font-semibold transition;
+  }
+
+  .category-cats {
+    @apply bg-orange-100 text-orange-500;
+  }
+
+  .category-dogs {
+    @apply border-2 border-blue-500 text-blue-500;
+  }
+
+  .category-birds {
+    @apply bg-yellow-100 text-yellow-600;
+  }
+
+  .category-rabbits {
+    @apply bg-gray-900 text-white;
+  }
+
+  .btn-primary {
+    @apply bg-white text-orange-500 px-5 py-2 rounded-full font-semibold hover:bg-orange-100 transition;
+  }
+
+  .card-pet {
+    @apply bg-white rounded-lg overflow-hidden shadow-md;
+  }
+
+  .card-overlay {
+    @apply p-4 bg-gradient-to-t from-black/70 via-black/40 to-transparent text-white absolute bottom-0 w-full;
+  }
+}

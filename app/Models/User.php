@@ -38,11 +38,33 @@ class User extends Authenticatable
      *
      * @return array<string, string>
      */
-    protected function casts(): array
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+    ];
+
+    public function reports()
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        return $this->hasMany(Report::class);
+    }
+
+    public function fosters()
+    {
+        return $this->hasMany(Foster::class);
+    }
+
+    public function donations()
+    {
+        return $this->hasMany(Donation::class);
+    }
+
+    public function getTotalDonationsAttribute()
+    {
+        return $this->donations()->where('status', 'success')->sum('amount');
+    }
+
+    public function getSuccessfulDonationsCountAttribute()
+    {
+        return $this->donations()->where('status', 'success')->count();
     }
 }
