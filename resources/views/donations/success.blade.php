@@ -10,20 +10,20 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                     </svg>
                 </div>
-                <h1 class="text-3xl font-bold text-gray-800 mb-2">Pembayaran Berhasil!</h1>
-                <p class="text-gray-600">Terima kasih atas donasi Anda sebesar</p>
+                <h1 class="text-3xl font-bold text-gray-800 mb-2">Payment Success!</h1>
+                <p class="text-gray-600">Thank you for your donation</p>
                 <p class="text-2xl font-bold text-yellow-600 mt-2">Rp {{ number_format($donation->amount, 0, ',', '.') }}</p>
             </div>
 
             <div class="bg-gray-50 rounded-lg p-6 mb-8">
-                <h2 class="text-lg font-semibold mb-4">Detail Transaksi</h2>
+                <h2 class="text-lg font-semibold mb-4">Transaction Details</h2>
                 <div class="space-y-3 text-left">
                     <div class="flex justify-between">
-                        <span class="text-gray-600">ID Transaksi</span>
+                        <span class="text-gray-600">Transaction ID</span>
                         <span class="font-medium">{{ $donation->transaction_id }}</span>
                     </div>
                     <div class="flex justify-between">
-                        <span class="text-gray-600">Tanggal</span>
+                        <span class="text-gray-600">Date</span>
                         <span class="font-medium">{{ $donation->created_at->format('d M Y H:i') }}</span>
                     </div>
                     <div class="flex justify-between">
@@ -36,10 +36,10 @@
             </div>
 
             <div class="text-center">
-                <p class="text-gray-600 mb-4">Total donasi yang terkumpul</p>
+                <p class="text-gray-600 mb-4">Total donations collected</p>
                 <p class="text-3xl font-bold text-yellow-600 mb-8">Rp {{ number_format($totalDonations, 0, ',', '.') }}</p>
                 <a href="{{ route('donations.index') }}" class="inline-block bg-yellow-500 text-white py-2 px-6 rounded-md hover:bg-yellow-600 transition duration-200">
-                    Kembali ke Halaman Donasi
+                    Back to Donation Page
                 </a>
             </div>
         </div>

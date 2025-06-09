@@ -36,13 +36,16 @@ class AnimalReportController extends Controller
             'longitude' => 'required|numeric',
         ]);
 
-        // Handle file upload
-        $path = $request->file('foto')->store('public/animal-reports');
+        if ($request->hasFile('foto')) {
+            $image = $request->file('foto');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $image->storeAs('animal-reports', $imageName, 'public');
+            $validated['foto'] = 'animal-reports/' . $imageName;
+        }
         
         // Create report
         $report = AnimalReport::create([
             ...$validated,
-            'foto' => $path,
             'status' => 'pending',
             'user_id' => auth()->id()
         ]);

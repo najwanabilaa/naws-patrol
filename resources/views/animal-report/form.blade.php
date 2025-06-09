@@ -3,37 +3,37 @@
         @csrf
         
         <div>
-            <x-input-label for="nama_lengkap" value="Nama Lengkap" />
+            <x-input-label for="nama_lengkap" value="Full Name" />
             <x-text-input id="nama_lengkap" name="nama_lengkap" type="text" class="mt-1 block w-full" required />
             <x-input-error :messages="$errors->get('nama_lengkap')" class="mt-2" />
         </div>
 
         <div>
-            <x-input-label for="nomor_hp" value="Nomor HP" />
+            <x-input-label for="nomor_hp" value="Phone Number" />
             <x-text-input id="nomor_hp" name="nomor_hp" type="text" class="mt-1 block w-full" required />
             <x-input-error :messages="$errors->get('nomor_hp')" class="mt-2" />
         </div>
 
         <div>
-            <x-input-label for="alamat" value="Alamat" />
+            <x-input-label for="alamat" value="Addresss" /
             <x-text-input id="alamat" name="alamat" type="text" class="mt-1 block w-full" required />
             <x-input-error :messages="$errors->get('alamat')" class="mt-2" />
         </div>
 
         <div>
-            <x-input-label for="alasan_melapor" value="Alasan Melapor" />
+            <x-input-label for="alasan_melapor" value="Reason for Reporting" />
             <textarea id="alasan_melapor" name="alasan_melapor" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" rows="3" required></textarea>
             <x-input-error :messages="$errors->get('alasan_melapor')" class="mt-2" />
         </div>
 
         <div>
-            <x-input-label for="foto" value="Foto Hewan" />
+            <x-input-label for="foto" value="Animal Photo" />
             <input type="file" id="foto" name="foto" class="mt-1 block w-full" accept="image/*" required />
             <x-input-error :messages="$errors->get('foto')" class="mt-2" />
         </div>
 
         <div>
-            <x-input-label for="location" value="Lokasi" />
+            <x-input-label for="location" value="Location" />
             <div class="mt-2 mb-4">
                 <input id="searchInput" class="w-full p-2 border border-gray-300 rounded-md" type="text" placeholder="Cari lokasi...">
             </div>
@@ -45,7 +45,7 @@
 
         <div class="flex justify-end">
             <x-primary-button>
-                Laporkan
+                Report
             </x-primary-button>
         </div>
     </form>

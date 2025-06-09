@@ -6,33 +6,33 @@
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-6 bg-white border-b border-gray-200">
                 <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-2xl font-bold">Detail Laporan Hewan Liar</h2>
+                    <h2 class="text-2xl font-bold">Wildlife Report Details</h2>
                     <a href="{{ route('animal-report.index') }}" class="text-blue-600 hover:text-blue-900">
-                        &larr; Kembali ke Daftar
+                        &larr; Back to List
                     </a>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <div class="mb-6">
-                            <h3 class="text-lg font-semibold mb-2">Informasi Pelapor</h3>
+                            <h3 class="text-lg font-semibold mb-2">Report Information</h3>
                             <div class="bg-gray-50 p-4 rounded-lg">
-                                <p class="mb-2"><span class="font-medium">Nama:</span> {{ $report->nama_lengkap }}</p>
-                                <p class="mb-2"><span class="font-medium">Nomor HP:</span> {{ $report->nomor_hp }}</p>
-                                <p class="mb-2"><span class="font-medium">Alamat:</span> {{ $report->alamat }}</p>
-                                <p class="mb-2"><span class="font-medium">Tanggal Laporan:</span> {{ $report->created_at->format('d M Y H:i') }}</p>
+                                <p class="mb-2"><span class="font-medium">Name:</span> {{ $report->nama_lengkap }}</p>
+                                <p class="mb-2"><span class="font-medium">Phone Number:</span> {{ $report->nomor_hp }}</p>
+                                <p class="mb-2"><span class="font-medium">Address:</span> {{ $report->alamat }}</p>
+                                <p class="mb-2"><span class="font-medium">Report Date:</span> {{ $report->created_at->format('d M Y H:i') }}</p>
                             </div>
                         </div>
 
                         <div class="mb-6">
-                            <h3 class="text-lg font-semibold mb-2">Alasan Melapor</h3>
+                            <h3 class="text-lg font-semibold mb-2">Reason for Reporting</h3>
                             <div class="bg-gray-50 p-4 rounded-lg">
                                 <p>{{ $report->alasan_melapor }}</p>
                             </div>
                         </div>
 
                         <div class="mb-6">
-                            <h3 class="text-lg font-semibold mb-2">Status Laporan</h3>
+                            <h3 class="text-lg font-semibold mb-2">Report Status</h3>
                             <div class="bg-gray-50 p-4 rounded-lg">
                                 <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full 
                                     @if($report->status === 'pending') bg-yellow-100 text-yellow-800
@@ -47,14 +47,20 @@
 
                     <div>
                         <div class="mb-6">
-                            <h3 class="text-lg font-semibold mb-2">Foto Hewan</h3>
+                            <h3 class="text-lg font-semibold mb-2">Animal Photo</h3>
                             <div class="bg-gray-50 p-4 rounded-lg">
-                                <img src="{{ Storage::url($report->foto) }}" alt="Foto hewan" class="w-full rounded-lg shadow-lg">
+                                @if($report->foto)
+                                    <img src="{{ Storage::url($report->foto) }}" 
+                                         alt="Animal Photo" 
+                                         class="w-full rounded-lg shadow-lg">
+                                @else
+                                    <p class="text-gray-500">No photo</p>
+                                @endif
                             </div>
                         </div>
 
                         <div>
-                            <h3 class="text-lg font-semibold mb-2">Lokasi</h3>
+                            <h3 class="text-lg font-semibold mb-2">Location</h3>
                             <div id="map" class="w-full h-64 rounded-lg border-2 border-gray-300"></div>
                         </div>
                     </div>

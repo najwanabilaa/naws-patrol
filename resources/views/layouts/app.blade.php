@@ -23,7 +23,7 @@
                                 <a href="#" class="text-white hover:text-yellow-400">Foster Home</a>
                                 <a href="{{ route('animal-report.index') }}" class="text-white hover:text-yellow-400">Stray Animal Report</a>
                                 <a href="{{ route('donations.index') }}" class="text-white hover:text-yellow-400 {{ request()->routeIs('donations.*') ? 'text-yellow-400' : '' }}">Donations</a>
-                                <a href="#" class="text-white hover:text-yellow-400">Educations</a>
+                                <a href="{{ route('educations.index') }}" class="text-white hover:text-yellow-400">Educations</a>
                             </div>
                         </div>
                     </div>

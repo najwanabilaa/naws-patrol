@@ -6,9 +6,9 @@
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-6 bg-white border-b border-gray-200">
                 <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-2xl font-bold">Daftar Laporan Hewan Liar</h2>
+                    <h2 class="text-2xl font-bold">Wildlife Report Details</h2>
                     <a href="{{ route('animal-report.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                        Buat Laporan Baru
+                        Create New Report
                     </a>
                 </div>
 

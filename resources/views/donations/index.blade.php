@@ -7,11 +7,11 @@
 @section('content')
 <div class="container mx-auto px-4 py-8">
     <div class="max-w-2xl mx-auto">
-        <h1 class="text-3xl font-bold mb-8 text-center">Donasi untuk NAWS Patrol</h1>
+        <h1 class="text-3xl font-bold mb-8 text-center">Donations for Naw's Patrol</h1>
         
         <div class="bg-white rounded-lg shadow-md p-6 mb-8">
             <div class="text-center mb-6">
-                <h2 class="text-xl font-semibold">Total Donasi Terkumpul</h2>
+                <h2 class="text-xl font-semibold">Total Donations Collected</h2>
                 <p class="text-3xl font-bold text-yellow-600">Rp {{ number_format($totalDonations, 0, ',', '.') }}</p>
             </div>
 
@@ -32,7 +32,7 @@
                 
                 <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Nama Depan</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
                         <input type="text" name="first_name" value="{{ old('first_name') }}" required
                             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-yellow-500">
                         @error('first_name')
@@ -41,7 +41,7 @@
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Nama Belakang</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
                         <input type="text" name="last_name" value="{{ old('last_name') }}"
                             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-yellow-500">
                         @error('last_name')
@@ -60,7 +60,7 @@
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Nomor Telepon</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
                     <input type="tel" name="phone" value="{{ old('phone') }}" required
                         class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-yellow-500">
                     @error('phone')
@@ -69,7 +69,7 @@
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Jumlah Donasi (Rp)</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Donation Amount (Rp)</label>
                     <input type="number" name="amount" value="{{ old('amount', 10000) }}" min="1000" required
                         class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-yellow-500">
                     @error('amount')
@@ -78,9 +78,9 @@
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Metode Pembayaran</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Payment Method</label>
                     <select name="payment_method" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-yellow-500" required>
-                        <option value="">Pilih metode pembayaran</option>
+                        <option value="">Select payment method</option>
                         <option value="bank_transfer" {{ old('payment_method') == 'bank_transfer' ? 'selected' : '' }}>Transfer Bank</option>
                         <option value="ewallet" {{ old('payment_method') == 'ewallet' ? 'selected' : '' }}>E-Wallet</option>
                     </select>
@@ -90,9 +90,9 @@
                 </div>
 
                 <div id="bankOptions">
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Pilih Bank</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Select Bank</label>
                     <select name="bank_type" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-yellow-500">
-                        <option value="">Pilih bank</option>
+                        <option value="">Select bank</option>
                         <option value="bca" {{ old('bank_type') == 'bca' ? 'selected' : '' }}>BCA</option>
                         <option value="bni" {{ old('bank_type') == 'bni' ? 'selected' : '' }}>BNI</option>
                         <option value="bri" {{ old('bank_type') == 'bri' ? 'selected' : '' }}>BRI</option>
@@ -103,9 +103,9 @@
                 </div>
 
                 <div id="ewalletOptions">
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Pilih E-Wallet</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Select E-Wallet</label>
                     <select name="ewallet_type" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-yellow-500">
-                        <option value="">Pilih e-wallet</option>
+                        <option value="">Select e-wallet</option>
                         <option value="gopay" {{ old('ewallet_type') == 'gopay' ? 'selected' : '' }}>GoPay</option>
                         <option value="ovo" {{ old('ewallet_type') == 'ovo' ? 'selected' : '' }}>OVO</option>
                         <option value="dana" {{ old('ewallet_type') == 'dana' ? 'selected' : '' }}>DANA</option>
@@ -116,14 +116,14 @@
                 </div>
 
                 <button type="submit" class="w-full bg-yellow-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600 transition duration-200">
-                    Lanjutkan Pembayaran
+                    Continue Payment
                 </button>
             </form>
         </div>
 
         @if($userDonations->count() > 0)
         <div class="bg-white rounded-lg shadow-md p-6">
-            <h2 class="text-xl font-semibold mb-4">Riwayat Donasi Anda</h2>
+            <h2 class="text-xl font-semibold mb-4">Your Donation History</h2>
             <div class="space-y-4">
                 @foreach($userDonations as $donation)
                 <div class="border-b pb-4 last:border-b-0 last:pb-0">
@@ -153,11 +153,11 @@
 <div id="paymentModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
     <div class="relative top-20 mx-auto p-5 border w-[500px] shadow-lg rounded-md bg-white">
         <div class="mt-3">
-            <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4 text-center">Detail Pembayaran</h3>
+            <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4 text-center">Payment Details</h3>
             <div id="paymentDetails" class="mt-4"></div>
             <div class="mt-6 text-center">
                 <button id="closeModal" class="bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600 transition-colors">
-                    Tutup
+                    Close   
                 </button>
             </div>
         </div>

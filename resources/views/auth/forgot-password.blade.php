@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="{{ asset('css/reset-password.css') }}">
+<link rel="stylesheet" href="{{ asset('css/forgot-password.css') }}">
 <x-guest-layout>
 <div class="container">
         <h2>Lupa Kata Sandi?</h2>

@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DonationController;
 use App\Http\Controllers\AnimalReportController;
+use App\Http\Controllers\EducationsController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -15,12 +16,9 @@ Route::get('/dashboard', function () {
 
 Route::middleware('auth')->group(function () {
     // Profile routes
-    Route::get('/profile', function() {
-        return view('profile.profile');
-    })->name('profile');
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // Donation routes
     Route::get('/donations', [DonationController::class, 'index'])->name('donations.index');
@@ -35,6 +33,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/animal-report', [AnimalReportController::class, 'store'])->name('animal-report.store');
     Route::get('/animal-report/{animalReport}', [AnimalReportController::class, 'show'])->name('animal-report.show');
     Route::patch('/animal-report/{animalReport}/status', [AnimalReportController::class, 'updateStatus'])->name('animal-report.update-status');
+
+    // Education routes
+    Route::resource('educations', EducationsController::class);
 });
 
 require __DIR__.'/auth.php';

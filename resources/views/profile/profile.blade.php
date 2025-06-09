@@ -6,10 +6,14 @@
         <div class="bg-white rounded-lg shadow-md p-8">
             <!-- Profile Info -->
             <div class="flex items-start space-x-8 mb-8">
-                <div class="w-32 h-32 bg-gray-200 rounded-full flex items-center justify-center">
-                    <svg class="w-20 h-20 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
-                    </svg>
+                <div class="w-32 h-32 bg-gray-200 rounded-full overflow-hidden">
+                    @if(Auth::user()->photo)
+                        <img src="{{ Storage::url(Auth::user()->photo) }}" alt="{{ Auth::user()->name }}" class="w-full h-full object-cover">
+                    @else
+                        <div class="w-full h-full flex items-center justify-center">
+                            <span class="text-4xl text-gray-400">{{ substr(Auth::user()->name, 0, 1) }}</span>
+                        </div>
+                    @endif
                 </div>
                 <div class="flex-1">
                     <div class="space-y-4">
@@ -18,7 +22,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                             </svg>
                             <div>
-                                <p class="text-sm text-gray-600">Nama</p>
+                                <p class="text-sm text-gray-600">Name</p>
                                 <p class="text-lg font-semibold">{{ Auth::user()->name }}</p>
                             </div>
                         </div>
@@ -36,7 +40,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
                             </svg>
                             <div>
-                                <p class="text-sm text-gray-600">Telepon</p>
+                                <p class="text-sm text-gray-600">Phone Number</p>
                                 <p class="text-lg font-semibold">{{ Auth::user()->phone ?? '-' }}</p>
                             </div>
                         </div>
@@ -46,7 +50,7 @@
 
             <!-- Statistics Section -->
             <div class="mt-12">
-                <h2 class="text-2xl font-bold mb-6">Statistik Aktivitas</h2>
+                <h2 class="text-2xl font-bold mb-6">Activity Statistics</h2>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <!-- Report Submitted -->
                     <div class="bg-white rounded-lg border border-gray-200 p-6">
@@ -57,7 +61,7 @@
                                 </svg>
                             </div>
                             <div>
-                                <p class="text-sm text-gray-600">Laporan Dibuat</p>
+                                <p class="text-sm text-gray-600">Report Submitted</p>
                                 <p class="text-xl font-bold">{{ Auth::user()->reports()->count() }}</p>
                             </div>
                         </div>
@@ -72,7 +76,7 @@
                                 </svg>
                             </div>
                             <div>
-                                <p class="text-sm text-gray-600">Hewan Difoster</p>
+                                <p class="text-sm text-gray-600">Animal Fostered</p>
                                 <p class="text-xl font-bold">{{ Auth::user()->fosters()->count() }}</p>
                             </div>
                         </div>
@@ -87,9 +91,9 @@
                                 </svg>
                             </div>
                             <div>
-                                <p class="text-sm text-gray-600">Total Donasi</p>
+                                <p class="text-sm text-gray-600">Total Donations</p>
                                 <p class="text-xl font-bold">Rp {{ number_format(Auth::user()->total_donations, 0, ',', '.') }}</p>
-                                <p class="text-xs text-gray-500 mt-1">{{ Auth::user()->successful_donations_count }} donasi berhasil</p>
+                                <p class="text-xs text-gray-500 mt-1">{{ Auth::user()->successful_donations_count }} donations successfully</p>
                             </div>
                         </div>
                     </div>
@@ -99,7 +103,7 @@
             <!-- Recent Donations -->
             @if(Auth::user()->donations()->count() > 0)
             <div class="mt-8">
-                <h3 class="text-xl font-semibold mb-4">Riwayat Donasi Terakhir</h3>
+                <h3 class="text-xl font-semibold mb-4">Recent Donations</h3>
                 <div class="space-y-4">
                     @foreach(Auth::user()->donations()->latest()->take(5)->get() as $donation)
                     <div class="bg-white rounded-lg border border-gray-200 p-4">
@@ -124,7 +128,7 @@
             <!-- Recent Animal Reports -->
             @if(Auth::user()->reports()->count() > 0)
             <div class="mt-8">
-                <h3 class="text-xl font-semibold mb-4">Riwayat Laporan Hewan Terakhir</h3>
+                <h3 class="text-xl font-semibold mb-4">Recent Animal Reports</h3>
                 <div class="space-y-4">
                     @foreach(Auth::user()->reports()->latest()->take(5)->get() as $report)
                     <div class="bg-white rounded-lg border border-gray-200 p-4">
@@ -149,7 +153,7 @@
                         </div>
                         <div class="mt-2">
                             <a href="{{ route('animal-report.show', $report) }}" class="text-blue-600 hover:text-blue-800 text-sm">
-                                Lihat Detail →
+                                View Details →
                             </a>
                         </div>
                     </div>
@@ -165,7 +169,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                     </svg>
-                    Pengaturan
+                    Settings
                 </a>
 
                 <form method="POST" action="{{ route('logout') }}">
@@ -174,7 +178,7 @@
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
                         </svg>
-                        Keluar
+                        Logout
                     </button>
                 </form>
             </div>
