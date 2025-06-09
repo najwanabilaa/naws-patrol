@@ -11,10 +11,10 @@ class DonationController extends Controller
 {
     public function index()
     {
-        // Auto update status for donations that are 1 minute old
+        // Auto update status for donations that are expired
         Donation::where('status', 'pending')
-            ->where('created_at', '<=', Carbon::now()->subMinute())
-            ->update(['status' => 'success']);
+            ->where('payment_expiry', '<=', Carbon::now())
+            ->update(['status' => 'expired']);
 
         $totalDonations = Donation::where('status', 'success')->sum('amount');
         $userDonations = auth()->user()->donations()->latest()->get();
@@ -31,8 +31,8 @@ class DonationController extends Controller
                 'phone' => 'required|string',
                 'amount' => 'required|numeric|min:1000',
                 'payment_method' => 'required|in:bank_transfer,ewallet',
-                'bank_type' => 'required_if:payment_method,bank_transfer|in:bca,bni,bri',
-                'ewallet_type' => 'required_if:payment_method,ewallet|in:gopay,ovo,dana',
+                'bank_type' => 'required_if:payment_method,bank_transfer|nullable|in:bca,bni,bri',
+                'ewallet_type' => 'required_if:payment_method,ewallet|nullable|in:gopay,ovo,dana',
             ], [
                 'bank_type.required_if' => 'Silakan pilih bank untuk pembayaran',
                 'bank_type.in' => 'Bank yang dipilih tidak valid',
@@ -41,42 +41,47 @@ class DonationController extends Controller
                 'amount.min' => 'Jumlah donasi minimal Rp 1.000',
             ]);
 
-            // Create donation record
+            // Set payment expiry to 1 minute from now
+            $paymentExpiry = Carbon::now()->addMinute();
+
+            // Generate QR code or VA based on payment method
+            $qrCode = null;
+            $virtualAccount = null;
+
+            if ($request->payment_method === 'bank_transfer') {
+                $virtualAccount = $this->generateDummyVA($request->bank_type);
+                $qrCode = $this->generateDummyQR("bank-" . $request->bank_type . "-" . $virtualAccount);
+            } else {
+                $qrCode = $this->generateDummyQR("ewallet-" . $request->ewallet_type . "-" . Str::random(10));
+            }
+
+            // Create donation record with payment details
             $donation = Donation::create([
                 'user_id' => auth()->id(),
                 'amount' => $request->amount,
                 'payment_method' => $request->payment_method,
+                'payment_type' => $request->payment_method === 'bank_transfer' ? 'bank' : 'ewallet',
+                'payment_provider' => $request->payment_method === 'bank_transfer' ? $request->bank_type : $request->ewallet_type,
+                'virtual_account' => $virtualAccount,
+                'qr_code' => $qrCode,
+                'payment_expiry' => $paymentExpiry,
                 'status' => 'pending',
                 'transaction_id' => 'TRX-' . Str::random(10),
             ]);
 
-            // Calculate when the payment will be confirmed (1 minute from now)
-            $confirmationTime = Carbon::now()->addMinute()->format('Y-m-d H:i:s');
-
             // Store payment details in session
-            if ($request->payment_method === 'bank_transfer') {
-                $paymentDetails = [
-                    'payment_type' => 'bank_transfer',
-                    'bank' => $request->bank_type,
-                    'virtual_account' => $this->generateDummyVA($request->bank_type),
-                    'amount' => $request->amount,
-                    'transaction_id' => $donation->transaction_id,
-                    'confirmation_time' => $confirmationTime,
-                    'donation_id' => $donation->id
-                ];
-            } else {
-                $paymentDetails = [
-                    'payment_type' => 'ewallet',
-                    'provider' => $request->ewallet_type,
-                    'qr_code' => $this->generateDummyQR($request->ewallet_type),
-                    'amount' => $request->amount,
-                    'transaction_id' => $donation->transaction_id,
-                    'confirmation_time' => $confirmationTime,
-                    'donation_id' => $donation->id
-                ];
-            }
+            $paymentDetails = [
+                'payment_type' => $donation->payment_type,
+                'provider' => $donation->payment_provider,
+                'virtual_account' => $donation->virtual_account,
+                'qr_code' => $donation->qr_code,
+                'amount' => $donation->amount,
+                'transaction_id' => $donation->transaction_id,
+                'confirmation_time' => $donation->payment_expiry->format('Y-m-d H:i:s'),
+                'donation_id' => $donation->id,
+                'bank' => $request->payment_method === 'bank_transfer' ? $request->bank_type : null
+            ];
 
-            // Store payment details in session and redirect to payment page
             session(['payment_details' => $paymentDetails]);
             return redirect()->route('donations.payment', $donation);
 
@@ -89,7 +94,19 @@ class DonationController extends Controller
     {
         // Check if payment details exist in session
         if (!session()->has('payment_details')) {
-            return redirect()->route('donations.index')->with('error', 'Detail pembayaran tidak ditemukan');
+            // If session expired, get payment details from database
+            $paymentDetails = [
+                'payment_type' => $donation->payment_type,
+                'provider' => $donation->payment_provider,
+                'virtual_account' => $donation->virtual_account,
+                'qr_code' => $donation->qr_code,
+                'amount' => $donation->amount,
+                'transaction_id' => $donation->transaction_id,
+                'confirmation_time' => $donation->payment_expiry->format('Y-m-d H:i:s'),
+                'donation_id' => $donation->id
+            ];
+        } else {
+            $paymentDetails = session('payment_details');
         }
 
         // Only allow viewing payment page for the donation owner
@@ -97,7 +114,12 @@ class DonationController extends Controller
             abort(403);
         }
 
-        $paymentDetails = session('payment_details');
+        // Check if payment is expired
+        if ($donation->payment_expiry <= Carbon::now()) {
+            $donation->update(['status' => 'expired']);
+            return redirect()->route('donations.index')->with('error', 'Waktu pembayaran telah berakhir');
+        }
+
         return view('donations.payment', compact('donation', 'paymentDetails'));
     }
 
@@ -114,6 +136,25 @@ class DonationController extends Controller
         ]);
     }
 
+    public function checkStatus(Donation $donation)
+    {
+        // Only allow checking status for the donation owner
+        if ($donation->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        // For demo purposes, we'll simulate payment success after 1 minute
+        if ($donation->created_at->addMinute() <= now() && $donation->status === 'pending') {
+            $donation->update(['status' => 'success']);
+        }
+        // Check if payment is expired (more than payment_expiry)
+        else if ($donation->payment_expiry <= now() && $donation->status === 'pending') {
+            $donation->update(['status' => 'expired']);
+        }
+
+        return response()->json(['status' => $donation->status]);
+    }
+
     private function generateDummyVA($bank)
     {
         $prefix = [
@@ -125,8 +166,8 @@ class DonationController extends Controller
         return $prefix[$bank] . rand(100000000, 999999999);
     }
 
-    private function generateDummyQR($provider)
+    private function generateDummyQR($data)
     {
-        return "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=DUMMY-" . Str::random(20);
+        return "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" . urlencode($data);
     }
 } 

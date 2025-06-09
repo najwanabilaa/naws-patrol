@@ -121,6 +121,43 @@
             </div>
             @endif
 
+            <!-- Recent Animal Reports -->
+            @if(Auth::user()->reports()->count() > 0)
+            <div class="mt-8">
+                <h3 class="text-xl font-semibold mb-4">Riwayat Laporan Hewan Terakhir</h3>
+                <div class="space-y-4">
+                    @foreach(Auth::user()->reports()->latest()->take(5)->get() as $report)
+                    <div class="bg-white rounded-lg border border-gray-200 p-4">
+                        <div class="flex justify-between items-start">
+                            <div class="flex space-x-4">
+                                <div class="w-16 h-16">
+                                    <img src="{{ Storage::url($report->foto) }}" alt="Foto hewan" class="w-full h-full object-cover rounded-lg">
+                                </div>
+                                <div>
+                                    <p class="font-medium">{{ $report->nama_lengkap }}</p>
+                                    <p class="text-sm text-gray-600">{{ $report->alamat }}</p>
+                                    <p class="text-sm text-gray-600">{{ $report->created_at->format('d M Y H:i') }}</p>
+                                </div>
+                            </div>
+                            <span class="px-2 py-1 text-sm rounded-full 
+                                @if($report->status === 'pending') bg-yellow-100 text-yellow-800
+                                @elseif($report->status === 'in_progress') bg-blue-100 text-blue-800
+                                @elseif($report->status === 'completed') bg-green-100 text-green-800
+                                @endif">
+                                {{ ucfirst(str_replace('_', ' ', $report->status)) }}
+                            </span>
+                        </div>
+                        <div class="mt-2">
+                            <a href="{{ route('animal-report.show', $report) }}" class="text-blue-600 hover:text-blue-800 text-sm">
+                                Lihat Detail →
+                            </a>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+            @endif
+
             <!-- Settings and Logout Buttons -->
             <div class="mt-8 flex justify-between">
                 <a href="{{ route('profile.edit') }}" class="inline-flex items-center px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg">

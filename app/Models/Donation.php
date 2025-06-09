@@ -13,10 +13,17 @@ class Donation extends Model
         'user_id',
         'amount',
         'payment_method',
+        'payment_type',
+        'payment_provider',
+        'virtual_account',
+        'qr_code',
+        'payment_expiry',
         'status',
-        'transaction_id',
-        'snap_token',
-        'payment_url'
+        'transaction_id'
+    ];
+
+    protected $dates = [
+        'payment_expiry'
     ];
 
     public function user()

@@ -21,7 +21,7 @@
                                 <a href="{{ route('profile') }}" class="text-white hover:text-yellow-400 {{ request()->routeIs('profile') ? 'text-yellow-400' : '' }}">Profile</a>
                                 <a href="#" class="text-white hover:text-yellow-400">Adoptions</a>
                                 <a href="#" class="text-white hover:text-yellow-400">Foster Home</a>
-                                <a href="#" class="text-white hover:text-yellow-400">Stray Animal Report</a>
+                                <a href="{{ route('animal-report.index') }}" class="text-white hover:text-yellow-400">Stray Animal Report</a>
                                 <a href="{{ route('donations.index') }}" class="text-white hover:text-yellow-400 {{ request()->routeIs('donations.*') ? 'text-yellow-400' : '' }}">Donations</a>
                                 <a href="#" class="text-white hover:text-yellow-400">Educations</a>
                             </div>

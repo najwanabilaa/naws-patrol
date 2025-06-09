@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DonationController;
+use App\Http\Controllers\AnimalReportController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -26,6 +27,14 @@ Route::middleware('auth')->group(function () {
     Route::post('/donations', [DonationController::class, 'store'])->name('donations.store');
     Route::get('/donations/{donation}/payment', [DonationController::class, 'payment'])->name('donations.payment');
     Route::get('/donations/{donation}/success', [DonationController::class, 'success'])->name('donations.success');
+    Route::get('/donations/{donation}/check-status', [DonationController::class, 'checkStatus'])->name('donations.check-status');
+
+    // Animal report routes
+    Route::get('/animal-report', [AnimalReportController::class, 'index'])->name('animal-report.index');
+    Route::get('/animal-report/create', [AnimalReportController::class, 'create'])->name('animal-report.create');
+    Route::post('/animal-report', [AnimalReportController::class, 'store'])->name('animal-report.store');
+    Route::get('/animal-report/{animalReport}', [AnimalReportController::class, 'show'])->name('animal-report.show');
+    Route::patch('/animal-report/{animalReport}/status', [AnimalReportController::class, 'updateStatus'])->name('animal-report.update-status');
 });
 
 require __DIR__.'/auth.php';

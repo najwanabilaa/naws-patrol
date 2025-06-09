@@ -69,9 +69,9 @@
                 <!-- Timer -->
                 <div class="text-center">
                     <p class="text-gray-600">Selesaikan pembayaran sebelum:</p>
-                    <p class="font-medium text-lg" id="countdown">
-                        {{ \Carbon\Carbon::parse($paymentDetails['confirmation_time'])->format('d M Y H:i:s') }}
-                    </p>
+                    <div class="font-medium text-lg" id="countdown">
+                        <span id="minutes">--</span>:<span id="seconds">--</span>
+                    </div>
                     <p class="text-sm text-gray-500 mt-1">Status akan otomatis diperbarui setelah pembayaran diterima</p>
                 </div>
 
@@ -99,5 +99,50 @@ function copyToClipboard(text) {
         console.error('Gagal menyalin:', err);
     });
 }
+
+// Set the countdown date
+const countDownDate = new Date("{{ $paymentDetails['confirmation_time'] }}").getTime();
+
+// Update the countdown every 1 second
+const countdownTimer = setInterval(function() {
+    // Get today's date and time
+    const now = new Date().getTime();
+    
+    // Find the distance between now and the countdown date
+    const distance = countDownDate - now;
+    
+    // Time calculations for minutes and seconds
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    
+    // Display the result
+    document.getElementById("minutes").innerHTML = String(minutes).padStart(2, '0');
+    document.getElementById("seconds").innerHTML = String(seconds).padStart(2, '0');
+    
+    // If the countdown is finished:
+    // 1. Stop the countdown
+    // 2. Show expired message
+    // 3. Redirect to donations page after 3 seconds
+    if (distance < 0) {
+        clearInterval(countdownTimer);
+        document.getElementById("countdown").innerHTML = "<span class='text-red-600'>Waktu pembayaran telah berakhir</span>";
+        setTimeout(() => {
+            window.location.href = "{{ route('donations.index') }}";
+        }, 3000);
+    }
+}, 1000);
+
+// Check payment status every 5 seconds
+setInterval(function() {
+    fetch("{{ route('donations.check-status', $donation->id) }}")
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                window.location.href = "{{ route('donations.success', $donation->id) }}";
+            } else if (data.status === 'expired') {
+                window.location.href = "{{ route('donations.index') }}";
+            }
+        });
+}, 5000);
 </script>
 @endsection 

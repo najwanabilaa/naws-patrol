@@ -45,7 +45,7 @@ class User extends Authenticatable
 
     public function reports()
     {
-        return $this->hasMany(Report::class);
+        return $this->hasMany(AnimalReport::class);
     }
 
     public function fosters()
