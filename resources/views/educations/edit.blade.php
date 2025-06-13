@@ -12,7 +12,6 @@
             @csrf
             @method('PUT')
 
-            <!-- Title -->
             <div>
                 <label for="title" class="block text-sm font-medium text-gray-700">Judul Artikel</label>
                 <input type="text" name="title" id="title" 
@@ -23,7 +22,6 @@
                 @enderror
             </div>
 
-            <!-- Category -->
             <div>
                 <label for="category" class="block text-sm font-medium text-gray-700">Category</label>
                 <select name="category" id="category" 
@@ -40,7 +38,6 @@
                 @enderror
             </div>
 
-            <!-- Current Image -->
             @if($education->image)
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Current Image</label>
@@ -52,7 +49,6 @@
                 </div>
             @endif
 
-            <!-- New Image -->
             <div>
                 <label for="image" class="block text-sm font-medium text-gray-700">
                     {{ $education->image ? 'Change Image (Optional)' : 'Add Image (Optional)' }}
@@ -67,7 +63,6 @@
                 @enderror
             </div>
 
-            <!-- Content -->
             <div>
                 <label for="content" class="block text-sm font-medium text-gray-700">Konten Artikel</label>
                 <textarea name="content" id="content" rows="15" required
@@ -77,7 +72,6 @@
                 @enderror
             </div>
 
-            <!-- Submit Button -->
             <div class="flex justify-end gap-4">
                 <a href="{{ route('educations.show', $education) }}" 
                    class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-gray-700 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">

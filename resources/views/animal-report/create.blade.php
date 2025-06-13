@@ -21,7 +21,6 @@
     let marker;
 
     function initMap() {
-        // Default to center of Indonesia
         const defaultLocation = { lat: -6.200000, lng: 106.816666 };
         
         map = new google.maps.Map(document.getElementById("map"), {
@@ -39,7 +38,6 @@
             animation: google.maps.Animation.DROP
         });
 
-        // Try to get user's location
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 (position) => {
@@ -52,18 +50,15 @@
                     updateCoordinates(pos);
                 },
                 () => {
-                    // Handle location error
                     console.log('Error: The Geolocation service failed.');
                 }
             );
         }
 
-        // Update coordinates when marker is dragged
         google.maps.event.addListener(marker, 'dragend', function() {
             updateCoordinates(marker.getPosition());
         });
 
-        // Click on map to move marker
         google.maps.event.addListener(map, 'click', function(event) {
             marker.setPosition(event.latLng);
             updateCoordinates(event.latLng);
@@ -76,3 +71,7 @@
     }
 </script>
 @endpush 
+
+@push('styles')
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+@endpush

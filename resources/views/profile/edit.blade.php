@@ -19,8 +19,6 @@
                     <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6" enctype="multipart/form-data">
                         @csrf
                         @method('patch')
-
-                        <!-- Profile Photo -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700">Profile Photo</label>
                             <div class="mt-1 flex items-center space-x-4">

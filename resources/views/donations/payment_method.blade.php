@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
 @push('styles')
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{{ asset('css/donations/payment_method.css') }}">
 @endpush
 
 @section('content')
 <div class="bg-white rounded-lg shadow-lg p-8 -mt-16 relative z-10">
-    <!-- Payment Details -->
     <div class="payment-details space-y-6">
         <div class="bg-gray-50 p-4 rounded-lg">
             <p class="text-lg font-semibold mb-2">Payment Summary</p>
@@ -128,8 +128,7 @@
 
 @push('scripts')
 <script>
-// Start countdown timer
-let timeLeft = 60; // 1 minute in seconds
+let timeLeft = 60; 
 const timerDisplay = document.getElementById('paymentTimer');
 const timerId = setInterval(() => {
     timeLeft--;
@@ -139,7 +138,6 @@ const timerId = setInterval(() => {
 
     if (timeLeft <= 0) {
         clearInterval(timerId);
-        // Redirect to success page
         window.location.href = "{{ route('donations.success', ['donation' => $donationId]) }}";
     }
 }, 1000);

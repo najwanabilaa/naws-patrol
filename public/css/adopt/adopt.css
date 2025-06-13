@@ -1,0 +1,336 @@
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: #ffffff;
+}
+
+.header {
+    background-color: #1B2B44;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+    border-bottom-left-radius: 50px;
+    border-bottom-right-radius: 50px;
+    min-height: 400px;
+    background-image: url('/image/paw.png');
+    background-repeat: no-repeat;
+    background-position: center bottom -800px;
+    background-size: 1350px;
+    opacity: 0.9;
+  }
+  .paw-print {
+    display: none; 
+  }
+  .header h1{
+    color: white;
+    margin-top: 100px;
+    margin-left: 50px;
+  }
+  .header p{
+    color: white;
+    margin-top: 70px;
+    margin-left: 50px;
+  }   
+  .nav-menu {
+    display: flex;
+    padding: 16px 32px;
+    gap: 32px;
+    background-color: transparent;
+    position: relative;
+    z-index: 3;
+    justify-content: center;
+  }
+  
+  .nav-menu a {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    opacity: 0.7;
+    transition: opacity 0.3s;
+    font-weight: 500;
+  }
+  
+  .nav-menu a.active {
+    opacity: 1;
+  }
+  
+  .nav-menu a:hover {
+    opacity: 1;
+  } 
+.title {
+    font-size: 4rem;
+    font-weight: bold;
+    margin: 0 0 20px;
+    color: #ffffff;
+}
+
+.description {
+    font-size: 1.1rem;
+    color: #ffffff;
+    opacity: 0.9;
+    max-width: 600px;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.adoption-category {
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.adoption-category h2 {
+    font-size: 2rem;
+    color: #192634;
+    margin-bottom: 10px;
+}
+
+.adoption-category p {
+    color: #666;
+    margin-bottom: 30px;
+}
+
+.category-container {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    flex-wrap: wrap;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 20px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    max-width: 1350px;
+    margin: 0 auto;
+}
+
+.category {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    border: 2px solid #FAAF32;
+    border-radius: 20px;
+    padding: 15px 25px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    min-width: 140px;
+}
+
+.category-icon {
+    width: 60px;
+    height: 60px;
+    background-color: #FAAF32;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.category-icon img {
+    width: 35px;
+    height: 35px;
+}
+
+.category span {
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.category:hover {
+    transform: translateY(-5px);
+}
+
+.cats {
+    color: #FAAF32;
+    border-color: #FAAF32;
+}
+
+.dogs {
+    color: #2B6ED6;
+    border-color: #2B6ED6;
+}
+
+.dogs .category-icon {
+    background-color: #2B6ED6;
+}
+
+.birds {
+    color: #CCA967;
+    border-color: #CCA967;
+}
+
+.birds .category-icon {
+    background-color: #CCA967;
+}
+
+.rabbits {
+    color: #383F47;
+    border-color: #383F47;
+}
+
+.rabbits .category-icon {
+    background-color: #383F47;
+}
+
+.search-box {
+    width: 100%;
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.search-box input {
+    flex: 1;
+    padding: 12px 20px;
+    border: 2px solid #eee;
+    border-radius: 10px;
+    font-size: 16px;
+}
+
+.search-box button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.search-box button img {
+    width: 30px;
+    height: 30px;
+}
+
+.adoption-section {
+    max-width: 1200px;
+    margin: 60px auto;
+    padding: 0 20px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 40px;
+}
+
+.section-header h2 {
+    font-size: 28px;
+    color: #192634;
+    margin: 0;
+}
+
+.section-header a {
+    color: #FAAF32;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.section-description {
+    color: #666;
+    margin: 10px 0 30px;
+}
+
+.pet-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.pet-card {
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.pet-card:hover {
+    transform: translateY(-10px);
+}
+
+.pet-card img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+}
+
+.overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 20px;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+    color: white;
+}
+
+.overlay h3 {
+    margin: 0 0 5px;
+    font-size: 1.2rem;
+}
+
+.overlay p {
+    margin: 0 0 10px;
+    opacity: 0.9;
+}
+
+.pet-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+#pagination-controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 30px;
+}
+
+#pagination-controls button {
+    padding: 8px 15px;
+    border: 1px solid #FAAF32;
+    background: white;
+    color: #FAAF32;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#pagination-controls button.active {
+    background: #FAAF32;
+    color: white;
+}
+
+#pagination-controls button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+    header {
+        min-height: 200px;
+        padding: 40px 0;
+    }
+
+    .title {
+        font-size: 2.5rem;
+    }
+
+    .category-container {
+        gap: 20px;
+    }
+
+    .category {
+        width: calc(50% - 10px);
+        min-width: auto;
+    }
+
+    .pet-cards {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+}

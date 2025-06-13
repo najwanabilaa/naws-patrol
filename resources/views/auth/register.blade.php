@@ -6,7 +6,7 @@
     <title>Naw's Patrol Register</title>
     <link href="{{ asset('css/login-register.css') }}" rel="stylesheet">
     <link href="{{ asset('js/login-register.js') }}" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
@@ -35,7 +35,6 @@
                         @endif
                     </div>
 
-                    <!-- Email Address -->
                     <div>
                         <input id="email" 
                                type="email" 
@@ -53,7 +52,6 @@
                         @endif
                     </div>
 
-                    <!-- Password -->
                     <div>
                         <input id="password" 
                                type="password"
@@ -70,7 +68,6 @@
                         @endif
                     </div>
 
-                    <!-- Confirm Password -->
                     <div>
                         <input id="password_confirmation" 
                                type="password"
@@ -87,7 +84,6 @@
                         @endif
                     </div>
 
-                    <!-- Phone Number -->
                     <div>
                         <input id="phone" 
                                type="text"
@@ -118,7 +114,7 @@
     </div>
     
     <div class="cat-container">
-        <img src="{{ asset('image/cat.png') }}" alt="Cats" class="cat-img" />
+        <img src="{{ asset('image/cat1.png') }}" alt="Cats" class="cat-img" />
     </div>
     <script src="{{ asset('js/script.js') }}"></script>
 </body>

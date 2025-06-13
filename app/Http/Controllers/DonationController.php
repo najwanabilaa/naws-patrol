@@ -11,7 +11,6 @@ class DonationController extends Controller
 {
     public function index()
     {
-        // Auto update status for donations that are expired
         Donation::where('status', 'pending')
             ->where('payment_expiry', '<=', Carbon::now())
             ->update(['status' => 'expired']);
@@ -41,10 +40,8 @@ class DonationController extends Controller
                 'amount.min' => 'Jumlah donasi minimal Rp 1.000',
             ]);
 
-            // Set payment expiry to 1 minute from now
             $paymentExpiry = Carbon::now()->addMinute();
 
-            // Generate QR code or VA based on payment method
             $qrCode = null;
             $virtualAccount = null;
 
@@ -55,7 +52,6 @@ class DonationController extends Controller
                 $qrCode = $this->generateDummyQR("ewallet-" . $request->ewallet_type . "-" . Str::random(10));
             }
 
-            // Create donation record with payment details
             $donation = Donation::create([
                 'user_id' => auth()->id(),
                 'amount' => $request->amount,
@@ -69,7 +65,6 @@ class DonationController extends Controller
                 'transaction_id' => 'TRX-' . Str::random(10),
             ]);
 
-            // Store payment details in session
             $paymentDetails = [
                 'payment_type' => $donation->payment_type,
                 'provider' => $donation->payment_provider,
@@ -92,9 +87,7 @@ class DonationController extends Controller
 
     public function payment(Donation $donation)
     {
-        // Check if payment details exist in session
         if (!session()->has('payment_details')) {
-            // If session expired, get payment details from database
             $paymentDetails = [
                 'payment_type' => $donation->payment_type,
                 'provider' => $donation->payment_provider,
@@ -109,12 +102,10 @@ class DonationController extends Controller
             $paymentDetails = session('payment_details');
         }
 
-        // Only allow viewing payment page for the donation owner
         if ($donation->user_id !== auth()->id()) {
             abort(403);
         }
 
-        // Check if payment is expired
         if ($donation->payment_expiry <= Carbon::now()) {
             $donation->update(['status' => 'expired']);
             return redirect()->route('donations.index')->with('error', 'Waktu pembayaran telah berakhir');
@@ -125,7 +116,6 @@ class DonationController extends Controller
 
     public function success(Donation $donation)
     {
-        // Only allow viewing success page for the donation owner
         if ($donation->user_id !== auth()->id()) {
             abort(403);
         }
@@ -138,16 +128,14 @@ class DonationController extends Controller
 
     public function checkStatus(Donation $donation)
     {
-        // Only allow checking status for the donation owner
         if ($donation->user_id !== auth()->id()) {
             abort(403);
         }
 
-        // For demo purposes, we'll simulate payment success after 1 minute
         if ($donation->created_at->addMinute() <= now() && $donation->status === 'pending') {
             $donation->update(['status' => 'success']);
         }
-        // Check if payment is expired (more than payment_expiry)
+
         else if ($donation->payment_expiry <= now() && $donation->status === 'pending') {
             $donation->update(['status' => 'expired']);
         }

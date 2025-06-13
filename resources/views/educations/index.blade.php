@@ -10,8 +10,7 @@
             </a>
         @endauth
     </div>
-
-    <!-- Category Filter -->
+    
     <div class="mb-8">
         <div class="flex flex-wrap gap-2">
             <a href="{{ route('educations.index') }}" class="px-4 py-2 rounded-full {{ !request('category') ? 'bg-yellow-500 text-white' : 'bg-gray-200 text-gray-700' }} hover:bg-yellow-600 hover:text-white transition">

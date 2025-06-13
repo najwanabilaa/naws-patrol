@@ -1,5 +1,4 @@
 <?php
-// app/Models/Animal.php
 
 namespace App\Models;
 
@@ -23,7 +22,6 @@ class Animal extends Model
         'color'
     ];
 
-    // Scopes
     public function scopeAvailable($query)
     {
         return $query->where('status', 'available');
@@ -34,7 +32,6 @@ class Animal extends Model
         return $query->where('type', $type);
     }
 
-    // Relationships
     public function fosters()
     {
         return $this->hasMany(FosterHome::class);
@@ -45,7 +42,6 @@ class Animal extends Model
         return $this->hasMany(Adoption::class);
     }
 
-    // Accessors
     public function getImageAttribute()
     {
         return $this->image_path;

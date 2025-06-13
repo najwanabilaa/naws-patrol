@@ -3,7 +3,6 @@
 @section('content')
 <div class="container mx-auto px-4 py-8">
     <div class="max-w-4xl mx-auto">
-        <!-- Back Button -->
         <a href="{{ route('educations.index') }}" class="inline-flex items-center text-gray-600 hover:text-yellow-600 mb-6">
             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
@@ -11,7 +10,6 @@
             Back to Article List
         </a>
 
-        <!-- Article Header -->
         <div class="mb-8">
             <h1 class="text-4xl font-bold mb-4">{{ $education->title }}</h1>
             
@@ -49,7 +47,6 @@
             @endif
         </div>
 
-        <!-- Article Image -->
         @if($education->image)
             <div class="mb-8">
                 <img src="{{ Storage::url($education->image) }}" 
@@ -58,12 +55,10 @@
             </div>
         @endif
 
-        <!-- Article Content -->
         <div class="prose prose-lg max-w-none">
             {!! nl2br(e($education->content)) !!}
         </div>
 
-        <!-- Share Buttons -->
         <div class="mt-8 pt-8 border-t">
             <h3 class="text-lg font-semibold mb-4">Share Article</h3>
             <div class="flex gap-4">

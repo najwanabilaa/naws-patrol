@@ -13,9 +13,6 @@ use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
-    /**
-     * Display the user's profile.
-     */
     public function show(Request $request): View
     {
         return view('profile.profile', [
@@ -23,9 +20,6 @@ class ProfileController extends Controller
         ]);
     }
 
-    /**
-     * Display the user's profile form.
-     */
     public function edit(Request $request): View
     {
         return view('profile.edit', [
@@ -33,9 +27,6 @@ class ProfileController extends Controller
         ]);
     }
 
-    /**
-     * Update the user's profile information.
-     */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
         $validated = $request->validated();
@@ -44,14 +35,12 @@ class ProfileController extends Controller
 
         if ($request->hasFile('photo')) {
             Log::info('Photo file detected');
-            
-            // Delete old photo if exists
+    
             if ($request->user()->photo) {
                 Log::info('Deleting old photo:', ['path' => $request->user()->photo]);
                 Storage::disk('public')->delete($request->user()->photo);
             }
 
-            // Store new photo
             $photo = $request->file('photo');
             $photoName = time() . '_' . $photo->getClientOriginalName();
             Log::info('Storing new photo:', ['name' => $photoName]);

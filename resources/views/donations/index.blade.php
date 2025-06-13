@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @push('styles')
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{{ asset('css/donations/payment_method.css') }}">
 @endpush
 
@@ -9,7 +10,7 @@
     <div class="max-w-2xl mx-auto">
         <h1 class="text-3xl font-bold mb-8 text-center">Donations for Naw's Patrol</h1>
         
-        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+        <div class="bg-yellow-400 rounded-lg shadow-md p-6 mb-8">
             <div class="text-center mb-6">
                 <h2 class="text-xl font-semibold">Total Donations Collected</h2>
                 <p class="text-3xl font-bold text-yellow-600">Rp {{ number_format($totalDonations, 0, ',', '.') }}</p>
@@ -122,7 +123,7 @@
         </div>
 
         @if($userDonations->count() > 0)
-        <div class="bg-white rounded-lg shadow-md p-6">
+        <div class="bg-gray-200 rounded-lg shadow-md p-6">
             <h2 class="text-xl font-semibold mb-4">Your Donation History</h2>
             <div class="space-y-4">
                 @foreach($userDonations as $donation)
@@ -149,7 +150,6 @@
     </div>
 </div>
 
-<!-- Payment Modal -->
 <div id="paymentModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
     <div class="relative top-20 mx-auto p-5 border w-[500px] shadow-lg rounded-md bg-white">
         <div class="mt-3">

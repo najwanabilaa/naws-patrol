@@ -91,7 +91,6 @@ class EducationsController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            // Delete old image if exists
             if ($education->image) {
                 Storage::disk('public')->delete($education->image);
             }

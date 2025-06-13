@@ -3,7 +3,6 @@
 @section('content')
 <div class="dashboard-content">
   <div class="dashboard-container">
-    <!-- About Section -->
     <div class="about-section">
       <p class="about-title">
         <span class="highlight">About Naw's Patrol</span>
@@ -18,11 +17,10 @@
         dan peduli.
       </p>
     </div>
-    
-    <!-- Hero Image -->
+
     <img class="hero-image" src="{{ asset('image/group 28.png') }}" alt="Hero Image" />
     
-    <!-- Services Section -->
+
     <div class="services-section">
       <div class="services-header">
         <p class="welcome-title">
@@ -34,9 +32,7 @@
         </p>
       </div>
       
-      <!-- Service Cards -->
       <div class="services-grid">
-        <!-- Adoption Card -->
         <div class="service-card" onclick="window.location.href='{{ route('adopt.index') }}'">
           <div class="card-background"></div>
           <img class="service-icon" src="{{ asset('image/icons8-adoption-64 2.png') }}" alt="Adoption" />
@@ -48,7 +44,6 @@
           </div>
         </div>
 
-        <!-- Foster Home Card -->
         <div class="service-card" onclick="window.location.href='{{ route('fosterHome.form') }}'">
           <div class="card-background"></div>
           <img class="service-icon" src="{{ asset('image/icons8-home-50 1.png') }}" alt="Foster Home" />
@@ -61,7 +56,6 @@
           </div>
         </div>
 
-        <!-- Report Card -->
         <div class="service-card" onclick="window.location.href='#'">
           <div class="card-background"></div>
           <img class="service-icon" src="{{ asset('image/icons8-briefcase-50 1.png') }}" alt="Report" />
@@ -73,7 +67,6 @@
           </div>
         </div>
 
-        <!-- Donation Card -->
         <div class="service-card" onclick="window.location.href='{{ route('donations.index') }}'">
           <div class="card-background"></div>
           <img class="service-icon" src="{{ asset('image/icons8-donation-64 1.png') }}" alt="Donation" />
@@ -84,8 +77,6 @@
             </p>
           </div>
         </div>
-
-        <!-- Education Card -->
         <div class="service-card" onclick="window.location.href='#'">
           <div class="card-background"></div>
           <img class="service-icon" src="{{ asset('image/icons8-article-50 1.png') }}" alt="Education" />
@@ -101,7 +92,6 @@
   </div>
 </div>
 
-<!-- Footer -->
 <footer class="dashboard-footer">
   <div class="footer-content">
     <div class="footer-section">
@@ -145,7 +135,6 @@
   box-sizing: border-box;
 }
 
-/* Override layout untuk dashboard */
 .container.mx-auto {
     max-width: none !important;
     margin: 0 !important;
@@ -438,7 +427,6 @@
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Add hover effects to service cards
     const serviceCards = document.querySelectorAll('.service-card');
     
     serviceCards.forEach(card => {

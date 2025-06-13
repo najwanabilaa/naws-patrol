@@ -4,7 +4,6 @@
 <div class="container mx-auto px-4 py-8">
     <div class="max-w-2xl mx-auto">
         <div class="bg-white rounded-lg shadow-md p-8">
-            <!-- Profile Info -->
             <div class="flex items-start space-x-8 mb-8">
                 <div class="w-32 h-32 bg-gray-200 rounded-full overflow-hidden">
                     @if(Auth::user()->photo)
@@ -48,11 +47,10 @@
                 </div>
             </div>
 
-            <!-- Statistics Section -->
             <div class="mt-12">
                 <h2 class="text-2xl font-bold mb-6">Activity Statistics</h2>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <!-- Report Submitted -->
+                   
                     <div class="bg-white rounded-lg border border-gray-200 p-6">
                         <div class="flex items-center space-x-4">
                             <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
@@ -67,7 +65,7 @@
                         </div>
                     </div>
 
-                    <!-- Fostered -->
+                 
                     <div class="bg-white rounded-lg border border-gray-200 p-6">
                         <div class="flex items-center space-x-4">
                             <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
@@ -81,8 +79,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Donations -->
                     <div class="bg-white rounded-lg border border-gray-200 p-6">
                         <div class="flex items-center space-x-4">
                             <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
@@ -100,7 +96,6 @@
                 </div>
             </div>
 
-            <!-- Recent Donations -->
             @if(Auth::user()->donations()->count() > 0)
             <div class="mt-8">
                 <h3 class="text-xl font-semibold mb-4">Recent Donations</h3>
@@ -125,7 +120,6 @@
             </div>
             @endif
 
-            <!-- Recent Animal Reports -->
             @if(Auth::user()->reports()->count() > 0)
             <div class="mt-8">
                 <h3 class="text-xl font-semibold mb-4">Recent Animal Reports</h3>
@@ -161,8 +155,6 @@
                 </div>
             </div>
             @endif
-
-            <!-- Settings and Logout Buttons -->
             <div class="mt-8 flex justify-between">
                 <a href="{{ route('profile.edit') }}" class="inline-flex items-center px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -186,3 +178,7 @@
     </div>
 </div>
 @endsection 
+
+@push('styles')
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+@endpush

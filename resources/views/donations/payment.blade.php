@@ -7,13 +7,11 @@
             <h1 class="text-2xl font-bold text-center mb-8">Payment Details</h1>
 
             <div class="space-y-6">
-                <!-- Amount -->
                 <div class="text-center">
                     <p class="text-gray-600 mb-1">Amount to be Paid</p>
                     <p class="text-3xl font-bold text-yellow-600">Rp {{ number_format($paymentDetails['amount'], 0, ',', '.') }}</p>
                 </div>
 
-                <!-- Payment Instructions -->
                 @if($paymentDetails['payment_type'] === 'bank_transfer')
                     <div class="bg-gray-50 rounded-lg p-6">
                         <h2 class="font-semibold text-lg mb-4">Bank Transfer {{ strtoupper($paymentDetails['bank']) }}</h2>
@@ -65,8 +63,6 @@
                         </div>
                     </div>
                 @endif
-
-                <!-- Timer -->
                 <div class="text-center">
                     <p class="text-gray-600">Complete the payment before:</p>
                     <div class="font-medium text-lg" id="countdown">
@@ -75,12 +71,10 @@
                     <p class="text-sm text-gray-500 mt-1">The status will be automatically updated after the payment is received</p>
                 </div>
 
-                <!-- Transaction ID -->
                 <div class="text-center text-sm text-gray-500">
                     ID Transaksi: {{ $paymentDetails['transaction_id'] }}
                 </div>
 
-                <!-- Back Button -->
                 <div class="text-center mt-8">
                     <a href="{{ route('donations.index') }}" class="text-yellow-600 hover:text-yellow-700">
                         <i class="fas fa-arrow-left mr-1"></i> Back to Donation Page
@@ -100,29 +94,20 @@ function copyToClipboard(text) {
     });
 }
 
-// Set the countdown date
 const countDownDate = new Date("{{ $paymentDetails['confirmation_time'] }}").getTime();
 
-// Update the countdown every 1 second
 const countdownTimer = setInterval(function() {
-    // Get today's date and time
+
     const now = new Date().getTime();
-    
-    // Find the distance between now and the countdown date
+
     const distance = countDownDate - now;
-    
-    // Time calculations for minutes and seconds
+
     const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((distance % (1000 * 60)) / 1000);
     
-    // Display the result
     document.getElementById("minutes").innerHTML = String(minutes).padStart(2, '0');
     document.getElementById("seconds").innerHTML = String(seconds).padStart(2, '0');
-    
-    // If the countdown is finished:
-    // 1. Stop the countdown
-    // 2. Show expired message
-    // 3. Redirect to donations page after 3 seconds
+
     if (distance < 0) {
         clearInterval(countdownTimer);
         document.getElementById("countdown").innerHTML = "<span class='text-red-600'>Payment time has expired</span>";
@@ -132,7 +117,6 @@ const countdownTimer = setInterval(function() {
     }
 }, 1000);
 
-// Check payment status every 5 seconds
 setInterval(function() {
     fetch("{{ route('donations.check-status', $donation->id) }}")
         .then(response => response.json())
@@ -146,3 +130,7 @@ setInterval(function() {
 }, 5000);
 </script>
 @endsection 
+
+@push('styles')
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+@endpush

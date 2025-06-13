@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Naw's Patrol Login</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="{{ asset('css/login-register.css') }}" rel="stylesheet">
     <link href="{{ asset('js/login-register.js') }}" rel="stylesheet">
 
@@ -65,7 +65,7 @@
     </div>
     
     <div class="cat-container">
-        <img src="{{ asset('image/cat.png') }}" alt="Cats" class="cat-img" />
+        <img src="{{ asset('image/cat1.png') }}" alt="Cats" class="cat-img" />
     </div>
     <script src="{{ asset('js/script.js') }}"></script>
 </body>

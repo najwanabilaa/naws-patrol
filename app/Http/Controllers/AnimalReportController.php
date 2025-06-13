@@ -31,7 +31,7 @@ class AnimalReportController extends Controller
             'nomor_hp' => 'required|string|max:20',
             'alamat' => 'required|string|max:255',
             'alasan_melapor' => 'required|string',
-            'foto' => 'required|image|max:2048', // max 2MB
+            'foto' => 'required|image|max:2048', 
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
         ]);
@@ -42,8 +42,7 @@ class AnimalReportController extends Controller
             $image->storeAs('animal-reports', $imageName, 'public');
             $validated['foto'] = 'animal-reports/' . $imageName;
         }
-        
-        // Create report
+
         $report = AnimalReport::create([
             ...$validated,
             'status' => 'pending',

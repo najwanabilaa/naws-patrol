@@ -47,8 +47,7 @@ function showPopup(message, isSuccess = true) {
     popupOverlay.appendChild(popup);
     
     document.body.appendChild(popupOverlay);
-    
-    // Add styles if not already added
+ 
     if (!document.querySelector('#popup-styles')) {
         const style = document.createElement('style');
         style.id = 'popup-styles';
@@ -169,7 +168,6 @@ function isValidPhone(phone) {
 }
 
 function toggleSwitch() {
-    // Switch animation
     const switchElement = document.querySelector('.switch');
     if (switchElement) {
         const style = document.createElement('style');
@@ -198,8 +196,7 @@ function toggleSwitch() {
 function handleLogin() {
     const email = document.querySelector('input[name="email"]').value.trim();
     const password = document.querySelector('input[name="password"]').value.trim();
-    
-    // Client-side validation
+
     if (!email || !password) {
         showPopup('Mohon isi semua field!', false);
         return;
@@ -214,8 +211,7 @@ function handleLogin() {
         showPopup('Password minimal 6 karakter!', false);
         return;
     }
-    
-    // If validation passes, submit the form
+
     showPopup('Memproses login...', true);
     
     setTimeout(() => {
@@ -229,8 +225,7 @@ function handleRegister() {
     const password = document.querySelector('input[name="password"]').value.trim();
     const passwordConfirmation = document.querySelector('input[name="password_confirmation"]').value.trim();
     const phone = document.querySelector('input[name="phone"]').value.trim();
-    
-    // Client-side validation
+
     if (!name || !email || !password || !passwordConfirmation || !phone) {
         showPopup('Mohon isi semua field!', false);
         return;
@@ -260,8 +255,7 @@ function handleRegister() {
         showPopup('Format nomor telepon tidak valid!', false);
         return;
     }
-    
-    // If validation passes, submit the form
+
     showPopup('Memproses registrasi...', true);
     
     setTimeout(() => {
@@ -269,11 +263,9 @@ function handleRegister() {
     }, 1000);
 }
 
-// DOM Ready
 document.addEventListener('DOMContentLoaded', function() {
     const inputs = document.querySelectorAll('input');
-    
-    // Enter key handler
+
     inputs.forEach(input => {
         input.addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
@@ -282,13 +274,11 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-    
-    // Focus first input
+
     if (inputs.length > 0) {
         inputs[0].focus();
     }
-    
-    // Real-time validation feedback
+
     inputs.forEach(input => {
         input.addEventListener('blur', function() {
             validateField(this);
@@ -299,7 +289,6 @@ document.addEventListener('DOMContentLoaded', function() {
 function validateField(field) {
     const value = field.value.trim();
     
-    // Remove existing error styling
     field.classList.remove('error');
     
     if (field.name === 'email' && value && !isValidEmail(value)) {
