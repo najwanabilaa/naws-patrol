@@ -1,83 +1,455 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="bg-white rounded-lg shadow-lg p-8 -mt-16 relative z-10">
-    <!-- Adoption Category Section -->
-    <div class="mb-16">
-        <h2 class="text-3xl font-bold mb-8">Adoption Category</h2>
-        <p class="text-gray-600 mb-8">Search for the Animal Category You Want to Adopt</p>
-        
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <!-- Cats -->
-            <div class="bg-white rounded-lg shadow-md p-6 flex items-center space-x-4 hover:shadow-lg transition-shadow cursor-pointer">
-                <div class="w-12 h-12 bg-yellow-400 rounded-lg flex items-center justify-center">
-                    <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M6.5 8C5.67157 8 5 8.67157 5 9.5C5 10.3284 5.67157 11 6.5 11C7.32843 11 8 10.3284 8 9.5C8 8.67157 7.32843 8 6.5 8Z"/>
-                        <path d="M13.5 8C12.6716 8 12 8.67157 12 9.5C12 10.3284 12.6716 11 13.5 11C14.3284 11 15 10.3284 15 9.5C15 8.67157 14.3284 8 13.5 8Z"/>
-                        <path fill-rule="evenodd" clip-rule="evenodd" d="M10 18C14.4183 18 18 14.4183 18 10C18 5.58172 14.4183 2 10 2C5.58172 2 2 5.58172 2 10C2 14.4183 5.58172 18 10 18ZM7 13C7 12.4477 7.44772 12 8 12H12C12.5523 12 13 12.4477 13 13C13 13.5523 12.5523 14 12 14H8C7.44772 14 7 13.5523 7 13Z"/>
-                    </svg>
-                </div>
-                <span class="text-lg font-semibold">Cats</span>
-            </div>
-
-            <!-- Dogs -->
-            <div class="bg-white rounded-lg shadow-md p-6 flex items-center space-x-4 hover:shadow-lg transition-shadow cursor-pointer">
-                <div class="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center">
-                    <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" clip-rule="evenodd" d="M10 18C14.4183 18 18 14.4183 18 10C18 5.58172 14.4183 2 10 2C5.58172 2 2 5.58172 2 10C2 14.4183 5.58172 18 10 18ZM7 8C6.44772 8 6 8.44772 6 9V11C6 11.5523 6.44772 12 7 12C7.55228 12 8 11.5523 8 11V9C8 8.44772 7.55228 8 7 8ZM12 8C11.4477 8 11 8.44772 11 9V11C11 11.5523 11.4477 12 12 12C12.5523 12 13 11.5523 13 11V9C13 8.44772 12.5523 8 12 8Z"/>
-                    </svg>
-                </div>
-                <span class="text-lg font-semibold">Dogs</span>
-            </div>
-
-            <!-- Birds -->
-            <div class="bg-white rounded-lg shadow-md p-6 flex items-center space-x-4 hover:shadow-lg transition-shadow cursor-pointer">
-                <div class="w-12 h-12 bg-amber-600 rounded-lg flex items-center justify-center">
-                    <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M10 3C6.13401 3 3 6.13401 3 10C3 13.866 6.13401 17 10 17C13.866 17 17 13.866 17 10C17 6.13401 13.866 3 10 3ZM8 7C8 6.44772 8.44772 6 9 6H11C11.5523 6 12 6.44772 12 7C12 7.55228 11.5523 8 11 8H9C8.44772 8 8 7.55228 8 7Z"/>
-                    </svg>
-                </div>
-                <span class="text-lg font-semibold">Birds</span>
-            </div>
-
-            <!-- Rabbits -->
-            <div class="bg-white rounded-lg shadow-md p-6 flex items-center space-x-4 hover:shadow-lg transition-shadow cursor-pointer">
-                <div class="w-12 h-12 bg-gray-700 rounded-lg flex items-center justify-center">
-                    <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" clip-rule="evenodd" d="M10 18C14.4183 18 18 14.4183 18 10C18 5.58172 14.4183 2 10 2C5.58172 2 2 5.58172 2 10C2 14.4183 5.58172 18 10 18ZM7 7C6.44772 7 6 7.44772 6 8V12C6 12.5523 6.44772 13 7 13C7.55228 13 8 12.5523 8 12V8C8 7.44772 7.55228 7 7 7ZM12 7C11.4477 7 11 7.44772 11 8V12C11 12.5523 11.4477 13 12 13C12.5523 13 13 12.5523 13 12V8C13 7.44772 12.5523 7 12 7Z"/>
-                    </svg>
-                </div>
-                <span class="text-lg font-semibold">Rabbits</span>
-            </div>
-        </div>
+<div class="dashboard-content">
+  <div class="dashboard-container">
+    <!-- About Section -->
+    <div class="about-section">
+      <p class="about-title">
+        <span class="highlight">About Naw's Patrol</span>
+      </p>
+      <p class="about-description">
+        Naw's Patrol adalah platform digital untuk melaporkan hewan liar, mengadopsi hewan terlantar, dan menjadi
+        rumah sementara (foster). Kami hadir untuk menyelamatkan, merawat, dan menghubungkan hewan-hewan yang
+        membutuhkan dengan orang-orang penuh kepedulian.
+      </p>
+      <p class="about-mission">
+        Naw's Patrol membantu hewan menemukan harapan baru. Bersama, kita bisa menciptakan dunia yang lebih ramah
+        dan peduli.
+      </p>
     </div>
-
-    <!-- Help Me Find a Home Section -->
-    <div>
-        <div class="flex justify-between items-center mb-8">
-            <div>
-                <h2 class="text-3xl font-bold">Help Me Find a <span class="text-yellow-400">Home</span></h2>
-                <p class="text-gray-600 mt-2">Pet adoption is quickly becoming the preferred way to find a new dog, puppy, cat, kitten or pet.</p>
-            </div>
-            <a href="#" class="text-yellow-400 hover:text-yellow-500 font-semibold">View All</a>
+    
+    <!-- Hero Image -->
+    <img class="hero-image" src="{{ asset('image/group 28.png') }}" alt="Hero Image" />
+    
+    <!-- Services Section -->
+    <div class="services-section">
+      <div class="services-header">
+        <p class="welcome-title">
+          <span class="welcome-text">Welcome to Naw's Patrol!</span>
+        </p>
+        <p class="welcome-subtitle">
+          We're dedicated to rescuing, protecting, and connecting animals in need with loving homes — through
+          reports, adoption, and foster care.
+        </p>
+      </div>
+      
+      <!-- Service Cards -->
+      <div class="services-grid">
+        <!-- Adoption Card -->
+        <div class="service-card" onclick="window.location.href='{{ route('adopt.index') }}'">
+          <div class="card-background"></div>
+          <img class="service-icon" src="{{ asset('image/icons8-adoption-64 2.png') }}" alt="Adoption" />
+          <div class="card-content">
+            <p class="service-title">Adopsi</p>
+            <p class="service-description">
+              Menghubungkan hewan terlantar dengan rumah baru yang penuh kasih dan tanggung jawab.
+            </p>
+          </div>
         </div>
 
-        <!-- Pet Cards Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <!-- Repeat this card for each pet -->
-            <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                <img src="{{ asset('images/daisy-cat.jpg') }}" alt="Daisy" class="w-full h-64 object-cover">
-                <div class="p-6">
-                    <h3 class="text-xl font-semibold mb-2">Daisy</h3>
-                    <p class="text-gray-600 mb-4">Mix Jenis Anggora</p>
-                    <div class="flex space-x-4">
-                        <span class="px-3 py-1 bg-gray-100 rounded-full text-sm">1 Tahun</span>
-                        <span class="px-3 py-1 bg-gray-100 rounded-full text-sm">Putih Lilac</span>
-                    </div>
-                </div>
-            </div>
-            <!-- Repeat for more pets -->
+        <!-- Foster Home Card -->
+        <div class="service-card" onclick="window.location.href='{{ route('fosterHome.form') }}'">
+          <div class="card-background"></div>
+          <img class="service-icon" src="{{ asset('image/icons8-home-50 1.png') }}" alt="Foster Home" />
+          <div class="card-content">
+            <p class="service-title">Foster Home</p>
+            <p class="service-description">
+              Kami berkomitmen menyediakan rumah sementara yang aman dan nyaman untuk hewan terlantar selama masa
+              perawatan.
+            </p>
+          </div>
         </div>
+
+        <!-- Report Card -->
+        <div class="service-card" onclick="window.location.href='#'">
+          <div class="card-background"></div>
+          <img class="service-icon" src="{{ asset('image/icons8-briefcase-50 1.png') }}" alt="Report" />
+          <div class="card-content">
+            <p class="service-title">Laporan Hewan</p>
+            <p class="service-description">
+              Memudahkan pelaporan hewan terlantar atau butuh bantuan agar segera mendapatkan pertolongan.
+            </p>
+          </div>
+        </div>
+
+        <!-- Donation Card -->
+        <div class="service-card" onclick="window.location.href='{{ route('donations.index') }}'">
+          <div class="card-background"></div>
+          <img class="service-icon" src="{{ asset('image/icons8-donation-64 1.png') }}" alt="Donation" />
+          <div class="card-content">
+            <p class="service-title">Donasi</p>
+            <p class="service-description">
+              Mendukung kebutuhan hewan terlantar seperti makanan, perawatan, dan tempat tinggal
+            </p>
+          </div>
+        </div>
+
+        <!-- Education Card -->
+        <div class="service-card" onclick="window.location.href='#'">
+          <div class="card-background"></div>
+          <img class="service-icon" src="{{ asset('image/icons8-article-50 1.png') }}" alt="Education" />
+          <div class="card-content">
+            <p class="service-title">Edukasi</p>
+            <p class="service-description">
+              Memberikan informasi dan tips penting untuk merawat dan melindungi hewan dengan baik.
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
+
+<!-- Footer -->
+<footer class="dashboard-footer">
+  <div class="footer-content">
+    <div class="footer-section">
+      <img class="footer-icon" src="{{ asset('image/icons8-cat-50 1.png') }}" alt="Cat Icon" />
+      <p class="footer-title">Naw's Patrol</p>
+      <p class="footer-description">
+        Hadir untuk membantu hewan terlantar menemukan harapan baru. Setiap laporan dan adopsi adalah langkah
+        kecil untuk perubahan besar.
+      </p>
+    </div>
+    
+    <div class="footer-section">
+      <img class="footer-email-icon" src="{{ asset('image/mark_email_unread.png') }}" alt="Email" />
+      <p class="footer-title">Contact Us</p>
+      <p class="footer-contact">(123) 456-789</p>
+      <p class="footer-contact">kelompok4@gmail.com</p>
+      <p class="footer-contact">Universitas Pendidikan Indonesia - Bandung</p>
+    </div>
+    
+    <div class="footer-section">
+      <p class="footer-title">Useful Links</p>
+      <p class="footer-link">Adopsi</p>
+      <p class="footer-link">Foster Home</p>
+      <p class="footer-link">Laporan Hewan</p>
+      <p class="footer-link">Donasi</p>
+      <p class="footer-link">Edukasi</p>
+    </div>
+  </div>
+  
+  <p class="footer-copyright">© 2025 Naw's Patrol Developed by Kelompok 4 | All rights reserved.</p>
+</footer>
 @endsection
+
+@push('styles')
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+<style>
+
+* {
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+}
+
+/* Override layout untuk dashboard */
+.container.mx-auto {
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+}
+
+.dashboard-content {
+  background-color: #fafafa;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.dashboard-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  position: relative;
+  padding: 40px 20px;
+}
+
+.about-section {
+  max-width: 664px;
+  margin: 60px 0 40px 0;
+  padding: 0 20px;
+}
+
+.about-title {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 32px;
+  margin-bottom: 15px;
+}
+
+.highlight {
+  color: #faaf32;
+}
+
+.about-description {
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  color: #3a3e47;
+  font-size: 20px;
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
+
+.about-mission {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  color: #383f47;
+  font-size: 20px;
+  line-height: 1.6;
+}
+
+.hero-image {
+  position: absolute;
+  width: 567px;
+  height: 502px;
+  top: 100px;
+  right: 50px;
+  max-width: 40%;
+}
+
+.services-section {
+  background-color: #f2f2f2;
+  border-radius: 39px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  padding: 60px 40px;
+  margin: 100px 0;
+  position: relative;
+}
+
+.services-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.welcome-title {
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  font-size: 20px;
+  color: #faaf32;
+  margin-bottom: 7px;
+}
+
+.welcome-subtitle {
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  color: #585958;
+  font-size: 24px;
+  line-height: 1.4;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.service-card {
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.service-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.card-background {
+  width: 100%;
+  height: 294px;
+  background-color: #ffffff;
+  border-radius: 23px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.service-icon {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  object-fit: cover;
+}
+
+.card-content {
+  position: absolute;
+  top: 85px;
+  left: 20px;
+  right: 20px;
+  text-align: center;
+}
+
+.service-title {
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  color: #faaf32;
+  font-size: 16px;
+  margin-bottom: 9px;
+}
+
+.service-description {
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  color: #3a3e47;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.dashboard-footer {
+  background-color: #d9d9d9;
+  padding: 60px 40px 20px;
+  margin-top: 50px;
+}
+
+.footer-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-section {
+  position: relative;
+}
+
+.footer-icon,
+.footer-email-icon {
+  width: 26px;
+  height: 26px;
+  margin-bottom: 10px;
+}
+
+.footer-title {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  color: #000000;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.footer-description,
+.footer-contact,
+.footer-link {
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  color: #000000;
+  font-size: 13px;
+  line-height: 1.4;
+  margin-bottom: 5px;
+}
+
+.footer-copyright {
+  text-align: center;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  color: #000000;
+  font-size: 13px;
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid #bbb;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .hero-image {
+    position: relative;
+    width: 100%;
+    height: auto;
+    max-width: 500px;
+    margin: 40px auto;
+    display: block;
+    right: auto;
+    top: auto;
+  }
+  
+  .services-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 20px 15px;
+  }
+  
+  .about-section {
+    margin: 20px 0;
+    padding: 0 10px;
+  }
+  
+  .about-title {
+    font-size: 24px;
+  }
+  
+  .about-description,
+  .about-mission {
+    font-size: 16px;
+  }
+  
+  .services-section {
+    padding: 40px 20px;
+    margin: 40px 0;
+  }
+  
+  .welcome-subtitle {
+    font-size: 18px;
+  }
+  
+  .services-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .footer-content {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-title {
+    font-size: 20px;
+  }
+  
+  .about-description,
+  .about-mission {
+    font-size: 14px;
+  }
+  
+  .welcome-subtitle {
+    font-size: 16px;
+  }
+  
+  .services-section {
+    padding: 30px 15px;
+  }
+}
+</style>
+@endpush
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Add hover effects to service cards
+    const serviceCards = document.querySelectorAll('.service-card');
+    
+    serviceCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-8px)';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+        });
+    });
+});
+</script>
+@endpush

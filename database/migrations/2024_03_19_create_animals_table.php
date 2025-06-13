@@ -1,4 +1,5 @@
 <?php
+// database/migrations/xxxx_create_animals_table.php
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -6,30 +7,26 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('animals', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('type'); // cat, dog, etc
-            $table->string('breed')->nullable();
-            $table->text('description')->nullable();
+            $table->string('type'); // cats, dogs, birds, rabbits
+            $table->string('breed');
+            $table->text('description');
             $table->string('gender');
-            $table->integer('age')->nullable();
-            $table->string('status')->default('available'); // available, fostered, adopted
-            $table->string('image_path')->nullable();
+            $table->string('age');
+            $table->enum('status', ['available', 'pending', 'adopted'])->default('available');
+            $table->string('image_path');
+            $table->string('location')->nullable();
+            $table->string('color')->nullable();
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('animals');
     }
-}; 
+};

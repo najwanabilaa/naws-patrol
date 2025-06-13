@@ -52,7 +52,7 @@ class User extends Authenticatable
 
     public function fosters()
     {
-        return $this->hasMany(Foster::class);
+        return $this->hasMany(FosterHome::class);
     }
 
     public function donations()

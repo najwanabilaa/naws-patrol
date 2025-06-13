@@ -5,6 +5,8 @@ use App\Http\Controllers\DonationController;
 use App\Http\Controllers\AnimalReportController;
 use App\Http\Controllers\EducationsController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdoptController;
+use App\Http\Controllers\FosterHomeController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -36,6 +38,58 @@ Route::middleware('auth')->group(function () {
 
     // Education routes
     Route::resource('educations', EducationsController::class);
+});
+
+// Adoption Routes - All routes require authentication
+Route::middleware(['auth'])->group(function () {
+    
+    // Main adoption page
+    Route::get('/adopt', [AdoptController::class, 'index'])->name('adopt.index');
+    
+    // Pet detail page
+    Route::get('/adopt/detail/{id}', [AdoptController::class, 'detail'])->name('adopt.detail');
+    
+    // Adoption form
+    Route::get('/adopt/form', [AdoptController::class, 'form'])->name('adopt.form');
+    Route::post('/adopt/form', [AdoptController::class, 'submitForm'])->name('adopt.form.submit');
+    
+    // Confirmation page
+    Route::get('/adopt/confirm', [AdoptController::class, 'confirm'])->name('adopt.confirm');
+    Route::post('/adopt/confirm', [AdoptController::class, 'confirmSubmit'])->name('adopt.confirm.submit');
+    
+    // Success page
+    Route::get('/adopt/success', [AdoptController::class, 'success'])->name('adopt.success');
+    
+    // Adoption status  
+    Route::get('/adopt/status', [AdoptController::class, 'adoptStatus'])->name('adopt.status');
+    
+    // Help page
+    // routes/web.php
+    Route::get('/adopt/help', [AdoptController::class, 'help'])->name('adopt.help');
+
+    
+    // Terms page
+    Route::get('/adopt/terms', [AdoptController::class, 'terms'])->name('adopt.terms');
+    
+    // AJAX Routes
+    Route::get('/api/pets', [AdoptController::class, 'getPets'])->name('api.pets');
+    Route::get('/api/adoption-status', [AdoptController::class, 'getAdoptionStatus'])->name('api.adoption.status');
+    Route::get('/api/adoption/{id}', [AdoptController::class, 'getAdoptionDetail'])->name('api.adoption.detail');
+    Route::delete('/api/adoption/{id}/cancel', [AdoptController::class, 'cancel'])->name('api.adoption.cancel');
+
+    // Foster Home Routes
+    // Foster Home Routes
+    Route::get('/foster-home', [FosterHomeController::class, 'showForm'])->name('fosterHome.form');
+    Route::post('/foster-home/register', [FosterHomeController::class, 'register'])->name('fosterHome.register');
+
+    // Foster Pages
+    Route::get('/foster/landing', [FosterHomeController::class, 'landing'])->name('foster.landing');
+    Route::get('/foster/info', [FosterHomeController::class, 'info'])->name('foster.info');
+    Route::get('/foster/needs', [FosterHomeController::class, 'needs'])->name('foster.needs');
+    Route::get('/foster/form/{id}', [FosterHomeController::class, 'fosterForm'])->name('foster.form');
+    Route::post('/foster/accept', [FosterHomeController::class, 'accept'])->name('foster.accept');
+    Route::get('/foster/accepted', [FosterHomeController::class, 'accepted'])->name('foster.accepted');
+
 });
 
 require __DIR__.'/auth.php';

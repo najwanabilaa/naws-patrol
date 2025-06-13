@@ -1,4 +1,5 @@
 <?php
+// app/Models/Animal.php
 
 namespace App\Models;
 
@@ -17,11 +18,36 @@ class Animal extends Model
         'gender',
         'age',
         'status',
-        'image_path'
+        'image_path',
+        'location',
+        'color'
     ];
 
+    // Scopes
+    public function scopeAvailable($query)
+    {
+        return $query->where('status', 'available');
+    }
+
+    public function scopeByType($query, $type)
+    {
+        return $query->where('type', $type);
+    }
+
+    // Relationships
     public function fosters()
     {
-        return $this->hasMany(Foster::class);
+        return $this->hasMany(FosterHome::class);
     }
-} 
+
+    public function adoptions()
+    {
+        return $this->hasMany(Adoption::class);
+    }
+
+    // Accessors
+    public function getImageAttribute()
+    {
+        return $this->image_path;
+    }
+}
